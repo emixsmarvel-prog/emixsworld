@@ -59,5 +59,5 @@
   <h3>📩 Contact</h3>
   <p>More ways to connect with me coming soon
 </section ><button onclick="document.getElementById('world').scrollIntoView({behavior:'smooth'})">
-    Enter My World<a href="about.html">About Me</a>
+    Enter My World
 </button>
