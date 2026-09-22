@@ -3,359 +3,696 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Infinite Mind V7 — The Living Mind</title>
+
+<title>Infinite Mind V7</title>
 
 <style>
+
 *{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
+box-sizing:border-box;
+-webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+margin:0;
+width:100%;
+height:100%;
+overflow:hidden;
+font-family:Arial,sans-serif;
+background:#02030b;
+color:white;
+touch-action:manipulation;
 }
 
 :root{
-  --accent:#7c5cff;
-  --accent2:#00eaff;
-  --bg:#02030a;
-  --panel:rgba(10,12,30,.92);
-  --text:#fff;
-}
-
-body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:Arial,Helvetica,sans-serif;
-  overflow:hidden;
-  min-height:100vh;
+--accent:#7c5cff;
+--accent2:#00eaff;
 }
 
 /* SPACE */
+
 #space{
-  position:fixed;
-  inset:0;
-  overflow:hidden;
-  background:
-    radial-gradient(circle at center,
-    rgba(124,92,255,.13),
-    transparent 35%),
-    radial-gradient(circle at 20% 20%,
-    rgba(0,234,255,.08),
-    transparent 30%),
-    #02030a;
+position:fixed;
+inset:0;
+overflow:hidden;
+
+background:
+radial-gradient(
+circle at center,
+rgba(124,92,255,.2),
+transparent 35%
+),
+radial-gradient(
+circle at 20% 20%,
+rgba(0,234,255,.08),
+transparent 30%
+),
+#02030b;
 }
 
+/* STARS */
+
 .star{
-  position:absolute;
-  width:2px;
-  height:2px;
-  background:white;
-  border-radius:50%;
-  animation:twinkle 2s infinite alternate;
+position:absolute;
+width:2px;
+height:2px;
+background:white;
+border-radius:50%;
+opacity:.7;
+animation:twinkle 2s infinite alternate;
 }
 
 @keyframes twinkle{
-  from{opacity:.15}
-  to{opacity:1}
+
+from{
+opacity:.2;
+}
+
+to{
+opacity:1;
+}
+
 }
 
 /* UNIVERSE */
+
 #universe{
-  position:absolute;
-  width:900px;
-  height:900px;
-  left:50%;
-  top:50%;
-  transform:translate(-50%,-50%);
-  transition:transform .2s ease;
-}
+position:absolute;
 
-/* CORE */
-#core{
-  position:absolute;
-  width:150px;
-  height:150px;
-  left:50%;
-  top:50%;
-  transform:translate(-50%,-50%);
-  border-radius:50%;
-  background:
-    radial-gradient(circle,
-    white 0%,
-    var(--accent2) 15%,
-    var(--accent) 40%,
-    #160b42 70%,
-    transparent 72%);
-  box-shadow:
-    0 0 25px var(--accent2),
-    0 0 70px var(--accent),
-    0 0 130px rgba(124,92,255,.4);
-  animation:corePulse 3s infinite ease-in-out;
-  z-index:5;
-}
+width:900px;
+height:900px;
 
-#coreText{
-  position:absolute;
-  width:100%;
-  text-align:center;
-  top:54px;
-  font-weight:bold;
-  font-size:15px;
-  text-shadow:0 0 10px white;
-}
+left:50%;
+top:50%;
 
-#level{
-  position:absolute;
-  width:100%;
-  text-align:center;
-  top:76px;
-  font-size:11px;
-  opacity:.8;
-}
-
-@keyframes corePulse{
-  0%,100%{transform:translate(-50%,-50%) scale(1)}
-  50%{transform:translate(-50%,-50%) scale(1.08)}
+transform:translate(-50%,-50%);
 }
 
 /* ORBITS */
+
 .orbit{
-  position:absolute;
-  left:50%;
-  top:50%;
-  transform:translate(-50%,-50%);
-  border:1px solid rgba(124,92,255,.25);
-  border-radius:50%;
+position:absolute;
+
+left:50%;
+top:50%;
+
+transform:translate(-50%,-50%);
+
+border:1px solid rgba(124,92,255,.25);
+
+border-radius:50%;
+
+pointer-events:none;
 }
 
-.o1{width:280px;height:280px}
-.o2{width:420px;height:420px}
-.o3{width:570px;height:570px}
-.o4{width:720px;height:720px}
+.o1{
+width:280px;
+height:280px;
+}
+
+.o2{
+width:420px;
+height:420px;
+}
+
+.o3{
+width:570px;
+height:570px;
+}
+
+.o4{
+width:720px;
+height:720px;
+}
+
+/* CORE */
+
+#core{
+
+position:absolute;
+
+width:150px;
+height:150px;
+
+left:50%;
+top:50%;
+
+transform:translate(-50%,-50%);
+
+border-radius:50%;
+
+background:
+radial-gradient(
+circle,
+white,
+var(--accent2) 15%,
+var(--accent) 40%,
+#160b42 70%,
+transparent 72%
+);
+
+box-shadow:
+0 0 30px var(--accent2),
+0 0 80px var(--accent);
+
+animation:pulse 3s infinite;
+
+z-index:5;
+
+pointer-events:none;
+}
+
+@keyframes pulse{
+
+0%,100%{
+transform:translate(-50%,-50%) scale(1);
+}
+
+50%{
+transform:translate(-50%,-50%) scale(1.08);
+}
+
+}
+
+#coreText{
+
+position:absolute;
+
+top:55px;
+
+width:100%;
+
+text-align:center;
+
+font-size:14px;
+
+font-weight:bold;
+
+}
+
+#level{
+
+position:absolute;
+
+top:77px;
+
+width:100%;
+
+text-align:center;
+
+font-size:10px;
+
+}
 
 /* PLANETS */
+
 .planet{
-  position:absolute;
-  width:78px;
-  height:78px;
-  border-radius:50%;
-  border:none;
-  color:white;
-  font-weight:bold;
-  cursor:pointer;
-  transform:translate(-50%,-50%);
-  box-shadow:0 0 25px currentColor;
-  z-index:10;
-  transition:.25s;
+
+position:absolute;
+
+width:80px;
+height:80px;
+
+border:0;
+
+border-radius:50%;
+
+color:white;
+
+font-weight:bold;
+
+font-size:10px;
+
+cursor:pointer;
+
+transform:translate(-50%,-50%);
+
+z-index:20;
+
+box-shadow:0 0 25px currentColor;
+
+transition:transform .15s;
+
+-webkit-user-select:none;
+user-select:none;
+
+touch-action:manipulation;
 }
 
-.planet:hover{
-  transform:translate(-50%,-50%) scale(1.15);
+.planet:active{
+
+transform:translate(-50%,-50%) scale(.82);
+
 }
 
-.p1{background:radial-gradient(circle at 30% 30%,#fff,#7c5cff,#160b42)}
-.p2{background:radial-gradient(circle at 30% 30%,#fff,#00eaff,#003b52)}
-.p3{background:radial-gradient(circle at 30% 30%,#fff,#ff4fa3,#52002b)}
-.p4{background:radial-gradient(circle at 30% 30%,#fff,#ffb300,#542800)}
-.p5{background:radial-gradient(circle at 30% 30%,#fff,#42ff8b,#003d1c)}
-.p6{background:radial-gradient(circle at 30% 30%,#fff,#a76cff,#250052)}
-.p7{background:radial-gradient(circle at 30% 30%,#fff,#ff3b3b,#4d0000)}
+.p1{
 
-#secretPlanet{
-  display:none;
-  background:radial-gradient(circle at 30% 30%,#fff,#ff00ff,#300030);
+background:
+radial-gradient(
+circle at 30% 30%,
+white,
+#7c5cff,
+#160b42
+);
+
+}
+
+.p2{
+
+background:
+radial-gradient(
+circle at 30% 30%,
+white,
+#00eaff,
+#003b52
+);
+
+}
+
+.p3{
+
+background:
+radial-gradient(
+circle at 30% 30%,
+white,
+#ff4fa3,
+#52002b
+);
+
+}
+
+.p4{
+
+background:
+radial-gradient(
+circle at 30% 30%,
+white,
+#ffb300,
+#542800
+);
+
+}
+
+.p5{
+
+background:
+radial-gradient(
+circle at 30% 30%,
+white,
+#42ff8b,
+#003d1c
+);
+
+}
+
+.p6{
+
+background:
+radial-gradient(
+circle at 30% 30%,
+white,
+#a76cff,
+#250052
+);
+
+}
+
+.p7{
+
+display:none;
+
+background:
+radial-gradient(
+circle at 30% 30%,
+white,
+#ff00ff,
+#300030
+);
+
 }
 
 /* HUD */
+
 #hud{
-  position:fixed;
-  top:15px;
-  left:15px;
-  z-index:50;
-  background:rgba(0,0,0,.45);
-  backdrop-filter:blur(10px);
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:15px;
-  padding:12px 15px;
-  font-size:13px;
+
+position:fixed;
+
+top:12px;
+left:12px;
+
+z-index:100;
+
+background:rgba(0,0,0,.7);
+
+border:1px solid rgba(255,255,255,.2);
+
+border-radius:15px;
+
+padding:12px;
+
+font-size:12px;
+
+backdrop-filter:blur(8px);
+
 }
 
 #hud strong{
-  color:var(--accent2);
+
+color:var(--accent2);
+
 }
 
-/* BUTTONS */
+/* BUTTON BAR */
+
 #buttons{
-  position:fixed;
-  bottom:15px;
-  left:50%;
-  transform:translateX(-50%);
-  z-index:50;
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  gap:8px;
-  width:95%;
-  max-width:700px;
+
+position:fixed;
+
+bottom:12px;
+
+left:50%;
+
+transform:translateX(-50%);
+
+z-index:150;
+
+width:96%;
+
+max-width:700px;
+
+display:flex;
+
+flex-wrap:wrap;
+
+justify-content:center;
+
+gap:7px;
+
 }
 
-button.control{
-  border:1px solid rgba(255,255,255,.2);
-  background:rgba(10,10,30,.85);
-  color:white;
-  padding:10px 13px;
-  border-radius:12px;
-  cursor:pointer;
-  font-weight:bold;
-  font-size:11px;
-  backdrop-filter:blur(8px);
+/* CONTROLS */
+
+.control{
+
+appearance:none;
+
+-webkit-appearance:none;
+
+border:1px solid rgba(255,255,255,.25);
+
+background:#101127;
+
+color:white;
+
+padding:11px 12px;
+
+border-radius:12px;
+
+font-size:11px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+box-shadow:0 3px 12px rgba(0,0,0,.4);
+
+touch-action:manipulation;
+
+transition:.12s;
+
 }
 
-button.control:hover{
-  background:var(--accent);
+.control:active{
+
+transform:scale(.9);
+
+background:var(--accent);
+
+box-shadow:
+0 0 20px var(--accent);
+
+}
+
+/* NOTICE */
+
+#notice{
+
+position:fixed;
+
+top:80px;
+
+left:50%;
+
+transform:translateX(-50%);
+
+z-index:500;
+
+display:none;
+
+width:90%;
+
+max-width:420px;
+
+padding:15px;
+
+text-align:center;
+
+background:#101127;
+
+border:2px solid var(--accent2);
+
+border-radius:14px;
+
+box-shadow:
+0 0 30px rgba(0,234,255,.4);
+
+font-weight:bold;
+
 }
 
 /* MODAL */
+
 .modal{
-  display:none;
-  position:fixed;
-  inset:0;
-  z-index:100;
-  background:rgba(0,0,0,.75);
-  align-items:center;
-  justify-content:center;
-  padding:20px;
+
+display:none;
+
+position:fixed;
+
+inset:0;
+
+z-index:300;
+
+background:rgba(0,0,0,.82);
+
+align-items:center;
+
+justify-content:center;
+
+padding:18px;
+
 }
 
 .modalBox{
-  width:min(500px,95%);
-  max-height:85vh;
-  overflow:auto;
-  background:var(--panel);
-  border:1px solid rgba(255,255,255,.15);
-  border-radius:20px;
-  padding:22px;
-  box-shadow:0 0 50px rgba(124,92,255,.3);
+
+width:100%;
+
+max-width:500px;
+
+max-height:85vh;
+
+overflow:auto;
+
+background:#0b0d20;
+
+border:1px solid rgba(255,255,255,.2);
+
+border-radius:20px;
+
+padding:20px;
+
+box-shadow:
+0 0 50px rgba(124,92,255,.4);
+
 }
 
 .modalBox h2{
-  margin-bottom:12px;
-  color:var(--accent2);
+
+color:var(--accent2);
+
+margin-top:0;
+
 }
 
 .modalBox p{
-  line-height:1.6;
-  opacity:.9;
+
+line-height:1.6;
+
 }
 
 .close{
-  float:right;
-  background:none;
-  border:none;
-  color:white;
-  font-size:22px;
-  cursor:pointer;
-}
 
-input,textarea,select{
-  width:100%;
-  margin:8px 0 12px;
-  padding:12px;
-  border-radius:10px;
-  border:1px solid rgba(255,255,255,.15);
-  background:#080914;
-  color:white;
-  outline:none;
-}
+float:right;
 
-textarea{
-  min-height:140px;
-  resize:vertical;
+background:#22253e;
+
+border:0;
+
+color:white;
+
+width:38px;
+
+height:38px;
+
+border-radius:50%;
+
+font-size:22px;
+
+cursor:pointer;
+
 }
 
 .action{
-  border:none;
-  background:var(--accent);
-  color:white;
-  padding:11px 16px;
-  border-radius:10px;
-  cursor:pointer;
-  font-weight:bold;
+
+border:0;
+
+background:var(--accent);
+
+color:white;
+
+padding:12px 18px;
+
+border-radius:10px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+touch-action:manipulation;
+
 }
 
-/* ENTITY */
+input,
+textarea,
+select{
+
+width:100%;
+
+padding:13px;
+
+margin:8px 0 14px;
+
+border-radius:10px;
+
+border:1px solid #333;
+
+background:#050610;
+
+color:white;
+
+font-size:15px;
+
+}
+
+textarea{
+
+min-height:140px;
+
+}
+
 .entity{
-  position:absolute;
-  width:8px;
-  height:8px;
-  border-radius:50%;
-  background:#fff;
-  box-shadow:0 0 15px #fff;
-  pointer-events:none;
-  animation:entityFloat 5s infinite ease-in-out;
+
+position:absolute;
+
+width:8px;
+
+height:8px;
+
+border-radius:50%;
+
+background:white;
+
+box-shadow:0 0 15px white;
+
+animation:float 5s infinite ease-in-out;
+
 }
 
-@keyframes entityFloat{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-30px)}
+@keyframes float{
+
+50%{
+transform:translateY(-30px);
 }
 
-/* NOTIFICATION */
-#notice{
-  position:fixed;
-  top:75px;
-  left:50%;
-  transform:translateX(-50%);
-  z-index:200;
-  background:rgba(10,10,25,.95);
-  border:1px solid var(--accent2);
-  padding:12px 18px;
-  border-radius:12px;
-  display:none;
-  text-align:center;
 }
 
-/* MOBILE */
 @media(max-width:600px){
 
-  #universe{
-    width:650px;
-    height:650px;
-  }
+#universe{
 
-  .o1{width:210px;height:210px}
-  .o2{width:320px;height:320px}
-  .o3{width:440px;height:440px}
-  .o4{width:560px;height:560px}
+width:650px;
+height:650px;
 
-  .planet{
-    width:62px;
-    height:62px;
-    font-size:9px;
-  }
-
-  #core{
-    width:115px;
-    height:115px;
-  }
-
-  #coreText{
-    top:39px;
-    font-size:12px;
-  }
-
-  #level{
-    top:59px;
-    font-size:9px;
-  }
-
-  #hud{
-    font-size:11px;
-  }
-
-  button.control{
-    padding:8px 9px;
-    font-size:9px;
-  }
 }
+
+.o1{
+width:210px;
+height:210px;
+}
+
+.o2{
+width:320px;
+height:320px;
+}
+
+.o3{
+width:440px;
+height:440px;
+}
+
+.o4{
+width:560px;
+height:560px;
+}
+
+.planet{
+
+width:62px;
+height:62px;
+
+font-size:8px;
+
+}
+
+#core{
+
+width:115px;
+height:115px;
+
+}
+
+#coreText{
+
+top:40px;
+font-size:11px;
+
+}
+
+#level{
+
+top:60px;
+
+}
+
+.control{
+
+font-size:9px;
+
+padding:9px 10px;
+
+}
+
+}
+
 </style>
 </head>
 
@@ -363,141 +700,1410 @@ textarea{
 
 <div id="space">
 
-  <div id="universe">
+<div id="universe">
 
-    <div class="orbit o1"></div>
-    <div class="orbit o2"></div>
-    <div class="orbit o3"></div>
-    <div class="orbit o4"></div>
+<div class="orbit o1"></div>
+<div class="orbit o2"></div>
+<div class="orbit o3"></div>
+<div class="orbit o4"></div>
 
-    <div id="core">
-      <div id="coreText">ÉMÌXS MIND</div>
-      <div id="level">LEVEL 1</div>
-    </div>
+<div id="core">
 
-    <button class="planet p1" id="planetDreams" onclick="openWorld('DREAMS')">
-      DREAMS
-    </button>
-
-    <button class="planet p2" id="planetThoughts" onclick="openWorld('THOUGHTS')">
-      THOUGHTS
-    </button>
-
-    <button class="planet p3" id="planetEmotions" onclick="openWorld('EMOTIONS')">
-      EMOTIONS
-    </button>
-
-    <button class="planet p4" id="planetMemories" onclick="openWorld('MEMORIES')">
-      MEMORIES
-    </button>
-
-    <button class="planet p5" id="planetCreativity" onclick="openWorld('CREATIVITY')">
-      CREATIVITY
-    </button>
-
-    <button class="planet p6" id="planetUnknown" onclick="openWorld('UNKNOWN')">
-      UNKNOWN
-    </button>
-
-    <button class="planet p7" id="secretPlanet" onclick="openWorld('SECRET')">
-      SECRET
-    </button>
-
-  </div>
+<div id="coreText">
+ÉMÌXS MIND
 </div>
+
+<div id="level">
+LEVEL 1
+</div>
+
+</div>
+
+<button
+id="planetDreams"
+class="planet p1"
+onclick="openWorld('DREAMS')">
+
+DREAMS
+
+</button>
+
+<button
+id="planetThoughts"
+class="planet p2"
+onclick="openWorld('THOUGHTS')">
+
+THOUGHTS
+
+</button>
+
+<button
+id="planetEmotions"
+class="planet p3"
+onclick="openWorld('EMOTIONS')">
+
+EMOTIONS
+
+</button>
+
+<button
+id="planetMemories"
+class="planet p4"
+onclick="openWorld('MEMORIES')">
+
+MEMORIES
+
+</button>
+
+<button
+id="planetCreativity"
+class="planet p5"
+onclick="openWorld('CREATIVITY')">
+
+CREATIVITY
+
+</button>
+
+<button
+id="planetUnknown"
+class="planet p6"
+onclick="openWorld('UNKNOWN')">
+
+UNKNOWN
+
+</button>
+
+<button
+id="secretPlanet"
+class="planet p7"
+onclick="openWorld('SECRET')">
+
+SECRET
+
+</button>
+
+</div>
+
+</div>
+
 
 <div id="hud">
-  🧠 <strong>INFINITE MIND V7</strong><br>
-  Fragments: <span id="fragments">0</span><br>
-  Worlds: <span id="worldCount">0</span>/7<br>
-  Achievements: <span id="achievementCount">0</span>
+
+🧠 <strong>INFINITE MIND V7</strong>
+
+<br>
+
+✨ Fragments:
+<span id="fragments">0</span>
+
+<br>
+
+🌍 Worlds:
+<span id="worldCount">0</span>/7
+
+<br>
+
+🏆 Achievements:
+<span id="achievementCount">0</span>
+
 </div>
+
 
 <div id="notice"></div>
 
+
 <div id="buttons">
-  <button class="control" onclick="findFragment()">✨ FIND FRAGMENT</button>
-  <button class="control" onclick="challenge()">🧩 CHALLENGE</button>
-  <button class="control" onclick="journal()">📖 JOURNAL</button>
-  <button class="control" onclick="buildPlanet()">🪐 BUILD PLANET</button>
-  <button class="control" onclick="theme()">🎨 THEME</button>
-  <button class="control" onclick="showMap()">🗺️ MAP</button>
-  <button class="control" onclick="resetMind()">♻️ RESET</button>
+
+<button
+class="control"
+onclick="findFragment()">
+
+✨ FIND
+
+</button>
+
+<button
+class="control"
+onclick="challenge()">
+
+🧩 CHALLENGE
+
+</button>
+
+<button
+class="control"
+onclick="journal()">
+
+📖 JOURNAL
+
+</button>
+
+<button
+class="control"
+onclick="buildPlanet()">
+
+🪐 PLANET
+
+</button>
+
+<button
+class="control"
+onclick="theme()">
+
+🎨 THEME
+
+</button>
+
+<button
+class="control"
+onclick="showMap()">
+
+🗺️ MAP
+
+</button>
+
+<button
+class="control"
+onclick="resetMind()">
+
+♻️ RESET
+
+</button>
+
 </div>
 
-<!-- WORLD MODAL -->
-<div class="modal" id="worldModal">
-  <div class="modalBox">
-    <button class="close" onclick="closeModal('worldModal')">×</button>
-    <h2 id="worldTitle"></h2>
-    <p id="worldText"></p>
-    <br>
-    <button class="action" onclick="discoverWorld()">✨ Discover World</button>
-  </div>
+
+<!-- WORLD -->
+
+<div
+id="worldModal"
+class="modal">
+
+<div class="modalBox">
+
+<button
+class="close"
+onclick="closeModal('worldModal')">
+
+×
+
+</button>
+
+<h2 id="worldTitle"></h2>
+
+<p id="worldText"></p>
+
+<button
+class="action"
+onclick="discoverWorld()">
+
+✨ DISCOVER
+
+</button>
+
 </div>
+
+</div>
+
 
 <!-- JOURNAL -->
-<div class="modal" id="journalModal">
-  <div class="modalBox">
-    <button class="close" onclick="closeModal('journalModal')">×</button>
-    <h2>📖 Mind Journal</h2>
-    <p>Write anything you want your Infinite Mind to remember.</p>
-    <textarea id="journalText" placeholder="Write your thought..."></textarea>
-    <button class="action" onclick="saveJournal()">SAVE ENTRY</button>
-    <br><br>
-    <div id="journalEntries"></div>
-  </div>
+
+<div
+id="journalModal"
+class="modal">
+
+<div class="modalBox">
+
+<button
+class="close"
+onclick="closeModal('journalModal')">
+
+×
+
+</button>
+
+<h2>📖 Mind Journal</h2>
+
+<p>
+Write something your Infinite Mind should remember.
+</p>
+
+<textarea
+id="journalText"
+placeholder="Write your thought here...">
+</textarea>
+
+<button
+class="action"
+onclick="saveJournal()">
+
+SAVE ENTRY
+
+</button>
+
+<div id="journalEntries"></div>
+
 </div>
+
+</div>
+
 
 <!-- CHALLENGE -->
-<div class="modal" id="challengeModal">
-  <div class="modalBox">
-    <button class="close" onclick="closeModal('challengeModal')">×</button>
-    <h2>🧩 Mind Challenge</h2>
-    <p id="question"></p>
 
-    <input id="answer" placeholder="Type your answer...">
+<div
+id="challengeModal"
+class="modal">
 
-    <button class="action" onclick="checkAnswer()">SUBMIT</button>
-  </div>
+<div class="modalBox">
+
+<button
+class="close"
+onclick="closeModal('challengeModal')">
+
+×
+
+</button>
+
+<h2>🧩 Mind Challenge</h2>
+
+<p id="question"></p>
+
+<input
+id="answer"
+placeholder="Your answer">
+
+<button
+class="action"
+onclick="checkAnswer()">
+
+SUBMIT
+
+</button>
+
 </div>
 
-<!-- BUILD PLANET -->
-<div class="modal" id="planetModal">
-  <div class="modalBox">
-    <button class="close" onclick="closeModal('planetModal')">×</button>
-    <h2>🪐 Build Your Planet</h2>
-
-    <input id="planetName" placeholder="Planet name">
-
-    <select id="planetStyle">
-      <option value="purple">Purple</option>
-      <option value="blue">Blue</option>
-      <option value="green">Green</option>
-      <option value="red">Red</option>
-      <option value="pink">Pink</option>
-    </select>
-
-    <button class="action" onclick="createPlanet()">CREATE PLANET</button>
-  </div>
 </div>
+
+
+<!-- PLANET -->
+
+<div
+id="planetModal"
+class="modal">
+
+<div class="modalBox">
+
+<button
+class="close"
+onclick="closeModal('planetModal')">
+
+×
+
+</button>
+
+<h2>🪐 Build Your Planet</h2>
+
+<input
+id="planetName"
+placeholder="Planet name">
+
+<select id="planetStyle">
+
+<option value="purple">
+Purple
+</option>
+
+<option value="blue">
+Blue
+</option>
+
+<option value="green">
+Green
+</option>
+
+<option value="red">
+Red
+</option>
+
+<option value="pink">
+Pink
+</option>
+
+</select>
+
+<button
+class="action"
+onclick="createPlanet()">
+
+CREATE
+
+</button>
+
+</div>
+
+</div>
+
 
 <!-- THEME -->
-<div class="modal" id="themeModal">
-  <div class="modalBox">
-    <button class="close" onclick="closeModal('themeModal')">×</button>
-    <h2>🎨 Universe Theme</h2>
 
-    <select id="themeSelect">
-      <option value="purple">Cosmic Purple</option>
-      <option value="blue">Deep Blue</option>
-      <option value="red">Red Universe</option>
-      <option value="green">Emerald Mind</option>
-    </select>
+<div
+id="themeModal"
+class="modal">
 
-    <button class="action" onclick="applyTheme()">APPLY</button>
-  </div>
+<div class="modalBox">
+
+<button
+class="close"
+onclick="closeModal('themeModal')">
+
+×
+
+</button>
+
+<h2>🎨 Universe Theme</h2>
+
+<select id="themeSelect">
+
+<option value="purple">
+Cosmic Purple
+</option>
+
+<option value="blue">
+Deep Blue
+</option>
+
+<option value="red">
+Red Universe
+</option>
+
+<option value="green">
+Emerald Mind
+</option>
+
+</select>
+
+<button
+class="action"
+onclick="applyTheme()">
+
+APPLY
+
+</button>
+
 </div>
 
+</div>
+
+
 <!-- MAP -->
-<div class="modal"
+
+<div
+id="mapModal"
+class="modal">
+
+<div class="modalBox">
+
+<button
+class="close"
+onclick="closeModal('mapModal')">
+
+×
+
+</button>
+
+<h2>🗺️ Mind Map</h2>
+
+<p>🌙 DREAMS</p>
+<p>💭 THOUGHTS</p>
+<p>❤️ EMOTIONS</p>
+<p>🕰️ MEMORIES</p>
+<p>🎨 CREATIVITY</p>
+<p>❓ UNKNOWN</p>
+<p>🔮 SECRET</p>
+<p>♾️ INFINITE REALM</p>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* DATA */
+
+let data =
+JSON.parse(
+localStorage.getItem(
+"emixsInfiniteMindV7Fixed"
+)
+) ||
+{
+fragments:0,
+discovered:[],
+achievements:[],
+journal:[],
+customPlanet:null,
+theme:"purple"
+};
+
+let currentWorld=null;
+
+const worlds={
+
+DREAMS:{
+title:"🌙 DREAMS",
+text:"The world where impossible ideas become possible."
+},
+
+THOUGHTS:{
+title:"💭 THOUGHTS",
+text:"A world of questions, ideas and endless connections."
+},
+
+EMOTIONS:{
+title:"❤️ EMOTIONS",
+text:"A world where feelings become energy."
+},
+
+MEMORIES:{
+title:"🕰️ MEMORIES",
+text:"Fragments of experiences floating through the mind."
+},
+
+CREATIVITY:{
+title:"🎨 CREATIVITY",
+text:"A world where ideas transform into new possibilities."
+},
+
+UNKNOWN:{
+title:"❓ UNKNOWN",
+text:"Nobody knows what is waiting here."
+},
+
+SECRET:{
+title:"🔮 SECRET",
+text:"You found a hidden layer of the Infinite Mind."
+}
+
+};
+
+
+/* SAVE */
+
+function save(){
+
+localStorage.setItem(
+"emixsInfiniteMindV7Fixed",
+JSON.stringify(data)
+);
+
+}
+
+
+/* STARS */
+
+for(let i=0;i<180;i++){
+
+let star=
+document.createElement("div");
+
+star.className="star";
+
+star.style.left=
+Math.random()*100+"%";
+
+star.style.top=
+Math.random()*100+"%";
+
+star.style.animationDelay=
+Math.random()*3+"s";
+
+document
+.getElementById("space")
+.appendChild(star);
+
+}
+
+
+/* ORBITS */
+
+const planets=[
+
+{
+id:"planetDreams",
+radius:140,
+speed:.00045,
+angle:0
+},
+
+{
+id:"planetThoughts",
+radius:210,
+speed:-.00035,
+angle:1
+},
+
+{
+id:"planetEmotions",
+radius:285,
+speed:.00025,
+angle:2
+},
+
+{
+id:"planetMemories",
+radius:360,
+speed:-.00018,
+angle:3
+},
+
+{
+id:"planetCreativity",
+radius:285,
+speed:.00032,
+angle:4
+},
+
+{
+id:"planetUnknown",
+radius:210,
+speed:-.0004,
+angle:5
+},
+
+{
+id:"secretPlanet",
+radius:360,
+speed:.00015,
+angle:4
+}
+
+];
+
+
+function animatePlanets(){
+
+planets.forEach(p=>{
+
+let el=
+document.getElementById(p.id);
+
+if(!el ||
+el.style.display==="none")
+return;
+
+p.angle+=p.speed;
+
+let x=
+Math.cos(p.angle)*p.radius;
+
+let y=
+Math.sin(p.angle)*p.radius;
+
+el.style.left=
+`calc(50% + ${x}px)`;
+
+el.style.top=
+`calc(50% + ${y}px)`;
+
+});
+
+requestAnimationFrame(
+animatePlanets
+);
+
+}
+
+animatePlanets();
+
+
+/* WORLD */
+
+function openWorld(name){
+
+currentWorld=name;
+
+document
+.getElementById("worldTitle")
+.textContent=
+worlds[name].title;
+
+document
+.getElementById("worldText")
+.textContent=
+worlds[name].text;
+
+document
+.getElementById("worldModal")
+.style.display="flex";
+
+notify("🌍 "+name+" opened");
+
+}
+
+
+function discoverWorld(){
+
+if(
+!data.discovered
+.includes(currentWorld)
+){
+
+data.discovered.push(
+currentWorld
+);
+
+data.fragments+=2;
+
+notify(
+"✨ "+currentWorld+
+" discovered! +2 fragments"
+);
+
+achievementCheck();
+
+save();
+
+updateUI();
+
+checkSecret();
+
+}
+
+closeModal(
+"worldModal"
+);
+
+}
+
+
+/* FRAGMENT */
+
+function findFragment(){
+
+let amount=
+Math.floor(
+Math.random()*3
+)+1;
+
+data.fragments+=amount;
+
+notify(
+"✨ FOUND "+
+amount+
+" MIND FRAGMENT!"
+);
+
+achievementCheck();
+
+checkSecret();
+
+save();
+
+updateUI();
+
+}
+
+
+/* SECRET */
+
+function checkSecret(){
+
+if(
+data.fragments>=10 ||
+data.discovered.length>=5
+){
+
+document
+.getElementById("secretPlanet")
+.style.display="block";
+
+}
+
+}
+
+
+/* ACHIEVEMENTS */
+
+function achievement(name){
+
+if(
+!data.achievements
+.includes(name)
+){
+
+data.achievements
+.push(name);
+
+notify(
+"🏆 "+name+
+" unlocked!"
+);
+
+save();
+
+updateUI();
+
+}
+
+}
+
+
+function achievementCheck(){
+
+if(data.discovered.length>=1)
+achievement("First Discovery");
+
+if(data.discovered.length>=3)
+achievement("Mind Explorer");
+
+if(data.discovered.length>=5)
+achievement("Deep Thinker");
+
+if(data.fragments>=10)
+achievement("Fragment Hunter");
+
+}
+
+
+/* JOURNAL */
+
+function journal(){
+
+renderJournal();
+
+document
+.getElementById("journalModal")
+.style.display="flex";
+
+notify("📖 Journal opened");
+
+}
+
+
+function saveJournal(){
+
+let text=
+document
+.getElementById("journalText")
+.value
+.trim();
+
+if(!text){
+
+notify(
+"✍️ Write something first"
+);
+
+return;
+
+}
+
+data.journal.unshift({
+
+text:text,
+
+date:
+new Date()
+.toLocaleString()
+
+});
+
+document
+.getElementById("journalText")
+.value="";
+
+save();
+
+renderJournal();
+
+achievement(
+"Mind Writer"
+);
+
+notify(
+"📖 Entry saved!"
+);
+
+}
+
+
+function renderJournal(){
+
+let box=
+document
+.getElementById("journalEntries");
+
+if(data.journal.length===0){
+
+box.innerHTML=
+"<p>No entries yet.</p>";
+
+return;
+
+}
+
+box.innerHTML=
+data.journal
+.map(e=>`
+
+<div style="
+padding:12px;
+margin-top:10px;
+background:#15172d;
+border-radius:10px;
+">
+
+<small>${e.date}</small>
+
+<br><br>
+
+${escapeHTML(e.text)}
+
+</div>
+
+`)
+.join("");
+
+}
+
+
+/* CHALLENGE */
+
+const challenges=[
+
+{
+q:"What comes next? 2, 4, 8, 16, ?",
+a:"32"
+},
+
+{
+q:"I have a face and two hands but no arms. What am I?",
+a:"clock"
+},
+
+{
+q:"What has keys but cannot open a door?",
+a:"piano"
+}
+
+];
+
+let currentChallenge;
+
+
+function challenge(){
+
+currentChallenge=
+challenges[
+Math.floor(
+Math.random()*
+challenges.length
+)
+];
+
+document
+.getElementById("question")
+.textContent=
+currentChallenge.q;
+
+document
+.getElementById("answer")
+.value="";
+
+document
+.getElementById("challengeModal")
+.style.display="flex";
+
+notify(
+"🧩 Challenge opened!"
+);
+
+}
+
+
+function checkAnswer(){
+
+let answer=
+document
+.getElementById("answer")
+.value
+.trim()
+.toLowerCase();
+
+if(
+answer===
+currentChallenge.a
+){
+
+data.fragments+=3;
+
+achievement(
+"Mind Challenger"
+);
+
+notify(
+"🧠 CORRECT! +3 FRAGMENTS"
+);
+
+save();
+
+updateUI();
+
+checkSecret();
+
+closeModal(
+"challengeModal"
+);
+
+}else{
+
+notify(
+"❌ Not correct — try again"
+);
+
+}
+
+}
+
+
+/* BUILD PLANET */
+
+function buildPlanet(){
+
+document
+.getElementById("planetModal")
+.style.display="flex";
+
+notify(
+"🪐 Planet Builder opened"
+);
+
+}
+
+
+function createPlanet(){
+
+let name=
+document
+.getElementById("planetName")
+.value
+.trim();
+
+let style=
+document
+.getElementById("planetStyle")
+.value;
+
+if(!name){
+
+notify(
+"🪐 Give your planet a name"
+);
+
+return;
+
+}
+
+data.customPlanet={
+name:name,
+style:style
+};
+
+save();
+
+createCustomPlanet();
+
+achievement(
+"World Builder"
+);
+
+closeModal(
+"planetModal"
+);
+
+notify(
+"🪐 "+name+
+" created!"
+);
+
+}
+
+
+function createCustomPlanet(){
+
+let old=
+document.getElementById(
+"customPlanet"
+);
+
+if(old)
+old.remove();
+
+if(!data.customPlanet)
+return;
+
+let p=
+document.createElement(
+"button"
+);
+
+p.id="customPlanet";
+
+p.className="planet";
+
+p.textContent=
+data.customPlanet.name;
+
+p.style.background=
+planetGradient(
+data.customPlanet.style
+);
+
+p.onclick=function(){
+
+notify(
+"🪐 This is your planet: "+
+data.customPlanet.name
+);
+
+};
+
+document
+.getElementById("universe")
+.appendChild(p);
+
+let angle=0;
+
+function move(){
+
+angle+=.0015;
+
+let x=
+Math.cos(angle)*390;
+
+let y=
+Math.sin(angle)*390;
+
+p.style.left=
+`calc(50% + ${x}px)`;
+
+p.style.top=
+`calc(50% + ${y}px)`;
+
+requestAnimationFrame(move);
+
+}
+
+move();
+
+}
+
+
+/* THEME */
+
+function theme(){
+
+document
+.getElementById("themeModal")
+.style.display="flex";
+
+notify(
+"🎨 Theme selector opened"
+);
+
+}
+
+
+function applyTheme(){
+
+let value=
+document
+.getElementById("themeSelect")
+.value;
+
+data.theme=value;
+
+setTheme(value);
+
+save();
+
+closeModal(
+"themeModal"
+);
+
+notify(
+"🎨 Theme applied!"
+);
+
+}
+
+
+function setTheme(value){
+
+let root=
+document.documentElement;
+
+if(value==="purple"){
+
+root.style.setProperty(
+"--accent",
+"#7c5cff"
+);
+
+root.style.setProperty(
+"--accent2",
+"#00eaff"
+);
+
+}
+
+if(value==="blue"){
+
+root.style.setProperty(
+"--accent",
+"#168cff"
+);
+
+root.style.setProperty(
+"--accent2",
+"#55ddff"
+);
+
+}
+
+if(value==="red"){
+
+root.style.setProperty(
+"--accent",
+"#ff3155"
+);
+
+root.style.setProperty(
+"--accent2",
+"#ff9b3d"
+);
+
+}
+
+if(value==="green"){
+
+root.style.setProperty(
+"--accent",
+"#00d878"
+);
+
+root.style.setProperty(
+"--accent2",
+"#9affc8"
+);
+
+}
+
+}
+
+
+/* MAP */
+
+function showMap(){
+
+document
+.getElementById("mapModal")
+.style.display="flex";
+
+notify(
+"🗺️ Mind Map opened"
+);
+
+}
+
+
+/* CLOSE */
+
+function closeModal(id){
+
+document
+.getElementById(id)
+.style.display="none";
+
+}
+
+
+/* NOTIFICATION */
+
+let timer;
+
+function notify(message){
+
+let box=
+document.getElementById(
+"notice"
+);
+
+box.textContent=message;
+
+box.style.display="block";
+
+clearTimeout(timer);
+
+timer=setTimeout(
+function(){
+
+box.style.display="none";
+
+},
+2200
+);
+
+}
+
+
+/* UI */
+
+function updateUI(){
+
+document
+.getElementById("fragments")
+.textContent=
+data.fragments;
+
+document
+.getElementById("worldCount")
+.textContent=
+data.discovered.length;
+
+document
+.getElementById("achievementCount")
+.textContent=
+data.achievements.length;
+
+let level=
+1+
+Math.floor(
+data.fragments/5
+);
+
+document
+.getElementById("level")
+.textContent=
+"LEVEL "+level;
+
+}
+
+
+/* RESET */
+
+function resetMind(){
+
+if(
+confirm(
+"Reset your Infinite Mind?"
+)
+){
+
+localStorage.removeItem(
+"emixsInfiniteMindV7Fixed"
+);
+
+location.reload();
+
+}
+
+}
+
+
+/* ESCAPE */
+
+function escapeHTML(text){
+
+return text
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
+
+/* PLANET GRADIENT */
+
+function planetGradient(style){
+
+let colors={
+
+purple:
+"radial-gradient(circle at 30% 30%,white,#7c5cff,#160b42)",
+
+blue:
+"radial-gradient(circle at 30% 30%,white,#00eaff,#003b52)",
+
+green:
+"radial-gradient(circle at 30% 30%,white,#42ff8b,#003d1c)",
+
+red:
+"radial-gradient(circle at 30% 30%,white,#ff3b3b,#4d0000)",
+
+pink:
+"radial-gradient(circle at 30% 30%,white,#ff4fa3,#52002b)"
+
+};
+
+return colors[style] ||
+colors.purple;
+
+}
+
+
+/* ENTITIES */
+
+function entity(){
+
+let e=
+document.createElement("div");
+
+e.className="entity";
+
+e.style.left=
+Math.random()*100+"%";
+
+e.style.top=
+Math.random()*100+"%";
+
+document
+.getElementById("space")
+.appendChild(e);
+
+setTimeout(
+()=>{
+e.remove()
+},
+6000
+);
+
+}
+
+setInterval(
+entity,
+3500
+);
+
+
+/* START */
+
+setTheme(
+data.theme
+);
+
+updateUI();
+
+checkSecret();
+
+createCustomPlanet();
+
+achievementCheck();
+
+</script>
+
+</body>
+  </html>
