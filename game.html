@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>ÉMÌXS Mind Game</title>
 
 <style>
+
 body{
     margin:0;
     min-height:100vh;
@@ -17,7 +19,7 @@ body{
 
 #game{
     max-width:500px;
-    margin:40px auto;
+    margin:30px auto;
     padding:20px;
 }
 
@@ -29,32 +31,32 @@ h1{
 .card{
     background:#111633;
     padding:25px;
-    border-radius:18px;
+    border-radius:20px;
     margin-top:20px;
     border:1px solid #303b80;
+    box-shadow:0 0 20px #10164d;
 }
 
 button{
     display:block;
     width:100%;
-    padding:15px;
-    margin:10px 0;
-    border:0;
-    border-radius:10px;
+    padding:16px;
+    margin:12px 0;
+    border:none;
+    border-radius:12px;
     background:#303b80;
     color:white;
-    font-size:16px;
-    cursor:pointer;
+    font-size:17px;
+    font-weight:bold;
 }
 
 button:active{
-    transform:scale(.96);
+    transform:scale(.94);
     background:#704cff;
 }
 
-#score{
-    color:#00ffff;
-    font-size:20px;
+#startSound{
+    background:#00a884;
 }
 
 #soundButton{
@@ -63,9 +65,16 @@ button:active{
 }
 
 #result{
-    min-height:25px;
+    min-height:30px;
     font-weight:bold;
+    font-size:18px;
 }
+
+#score{
+    color:#00ffff;
+    font-size:21px;
+}
+
 </style>
 </head>
 
@@ -77,8 +86,13 @@ button:active{
 
 <p>Think fast. Trust your mind.</p>
 
+<!-- FIRST AUDIO BUTTON -->
+<button id="startSound" onclick="startGameSound()">
+🔊 TAP TO START SOUND
+</button>
+
 <button id="soundButton" onclick="toggleSound()">
-🔊 Sound: ON
+🔊 Sound ON
 </button>
 
 <div class="card">
@@ -87,13 +101,23 @@ button:active{
 What is 5 + 5?
 </h2>
 
-<button onclick="answer(10)">10</button>
-<button onclick="answer(15)">15</button>
-<button onclick="answer(20)">20</button>
+<button onclick="answer(10)">
+10
+</button>
+
+<button onclick="answer(15)">
+15
+</button>
+
+<button onclick="answer(20)">
+20
+</button>
 
 <p id="result"></p>
 
-<p id="score">Score: 0</p>
+<p id="score">
+Score: 0
+</p>
 
 </div>
 
@@ -102,230 +126,50 @@ What is 5 + 5?
 
 <script>
 
+/* =========================
+   GAME VARIABLES
+========================= */
+
 let score = 0;
 let soundOn = true;
-let gameFinished = false;
+let finished = false;
 
+let audio;
 
-/* SOUND ENGINE */
 
-let audioContext;
+/* =========================
+   START AUDIO
+========================= */
 
+function startGameSound(){
 
-function startAudio(){
+    try{
 
-    if(!audioContext){
+        audio = new (
+            window.AudioContext ||
+            window.webkitAudioContext
+        )();
 
-        audioContext =
-            new (window.AudioContext ||
-            window.webkitAudioContext)();
+        if(audio.state === "suspended"){
+            audio.resume();
+        }
 
-    }
+        soundOn = true;
 
-    if(audioContext.state === "suspended"){
+        document.getElementById("startSound")
+        .innerHTML = "✅ SOUND READY";
 
-        audioContext.resume();
+        document.getElementById("soundButton")
+        .innerHTML = "🔊 Sound ON";
 
-    }
-}
+        /* STARTUP SOUND */
 
-
-function playTone(
-    frequency,
-    duration,
-    type="sine"
-){
-
-    if(!soundOn) return;
-
-    startAudio();
-
-    const oscillator =
-        audioContext.createOscillator();
-
-    const gain =
-        audioContext.createGain();
-
-    oscillator.type = type;
-
-    oscillator.frequency.value =
-        frequency;
-
-    gain.gain.setValueAtTime(
-        0.15,
-        audioContext.currentTime
-    );
-
-    gain.gain.exponentialRampToValueAtTime(
-        0.001,
-        audioContext.currentTime + duration
-    );
-
-    oscillator.connect(gain);
-
-    gain.connect(audioContext.destination);
-
-    oscillator.start();
-
-    oscillator.stop(
-        audioContext.currentTime + duration
-    );
-}
-
-
-/* CLICK SOUND */
-
-function clickSound(){
-
-    playTone(500,0.08,"square");
-
-}
-
-
-/* CORRECT SOUND */
-
-function correctSound(){
-
-    playTone(700,0.12);
-
-    setTimeout(function(){
-
-        playTone(1000,0.18);
-
-    },120);
-
-}
-
-
-/* WRONG SOUND */
-
-function wrongSound(){
-
-    playTone(180,0.25,"sawtooth");
-
-}
-
-
-/* WIN SOUND */
-
-function winSound(){
-
-    playTone(600,0.15);
-
-    setTimeout(function(){
-        playTone(800,0.15);
-    },150);
-
-    setTimeout(function(){
-        playTone(1000,0.25);
-    },300);
-
-}
-
-
-/* GAME OVER SOUND */
-
-function gameOverSound(){
-
-    playTone(400,0.2);
-
-    setTimeout(function(){
-        playTone(250,0.35);
-    },200);
-
-}
-
-
-/* TOGGLE SOUND */
-
-function toggleSound(){
-
-    soundOn = !soundOn;
-
-    const button =
-        document.getElementById("soundButton");
-
-    if(soundOn){
-
-        button.innerHTML =
-            "🔊 Sound: ON";
-
-        startAudio();
-        clickSound();
-
-    }else{
-
-        button.innerHTML =
-            "🔇 Sound: OFF";
-
-    }
-
-}
-
-
-/* ANSWER */
-
-function answer(number){
-
-    if(gameFinished) return;
-
-    clickSound();
-
-
-    if(number === 10){
-
-        score += 100;
-
-        correctSound();
-
-        document.getElementById("result")
-            .innerHTML =
-            "✅ CORRECT! 🔥";
-
-        document.getElementById("result")
-            .style.color="#00ffae";
-
-        document.getElementById("question")
-            .innerHTML =
-            "🌟 You got it!";
-
-
-        gameFinished = true;
-
+        tone(600,0.15,"sine");
 
         setTimeout(function(){
+            tone(900,0.2,"sine");
+        },160);
 
-            winSound();
+    }catch(error){
 
-            document.getElementById("question")
-                .innerHTML =
-                "🏆 MIND MASTER!";
-
-            document.getElementById("result")
-                .innerHTML =
-                "You completed the challenge!";
-
-        },700);
-
-
-    }else{
-
-        wrongSound();
-
-        document.getElementById("result")
-            .innerHTML =
-            "❌ WRONG! Try again.";
-
-        document.getElementById("result")
-            .style.color="#ff527f";
-
-    }
-
-
-    document.getElementById("score")
-        .innerHTML =
-        "Score: " + score;
-
-}
-
-</
+        alert("Your browser blocked
