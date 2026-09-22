@@ -44,4 +44,586 @@ h1{
 .stats{
     display:flex;
     justify-content:space-between;
-    gap:10px
+    gap:10px;
+    margin-bottom:20px;
+}
+
+.stat{
+    flex:1;
+    padding:12px 5px;
+    background:#10132b;
+    border:1px solid #30365f;
+    border-radius:12px;
+}
+
+.stat b{
+    display:block;
+    color:#00eaff;
+    font-size:20px;
+    margin-top:4px;
+}
+
+.card{
+    background:rgba(13,17,43,.95);
+    border:1px solid #454b7a;
+    border-radius:20px;
+    padding:25px;
+    box-shadow:0 0 35px rgba(0,234,255,.12);
+}
+
+#level{
+    color:#9d8cff;
+    font-weight:bold;
+}
+
+#question{
+    font-size:22px;
+    line-height:1.4;
+    margin:25px 0;
+}
+
+.answers{
+    display:grid;
+    gap:12px;
+}
+
+.answer{
+    width:100%;
+    min-height:50px;
+    border:1px solid #41476f;
+    border-radius:12px;
+    background:#171b39;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    padding:12px;
+}
+
+.answer:hover{
+    background:#252b55;
+}
+
+.answer:active{
+    transform:scale(.97);
+}
+
+.correct{
+    background:#075d43 !important;
+    border-color:#00e6a0 !important;
+}
+
+.wrong{
+    background:#681d35 !important;
+    border-color:#ff527f !important;
+}
+
+#message{
+    min-height:25px;
+    margin-top:18px;
+    font-weight:bold;
+}
+
+button{
+    font-family:inherit;
+}
+
+#startBtn,
+#restartBtn{
+    margin-top:20px;
+    padding:13px 25px;
+    border:0;
+    border-radius:12px;
+    background:#7c5cff;
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+#startBtn:hover,
+#restartBtn:hover{
+    background:#9479ff;
+}
+
+.hidden{
+    display:none;
+}
+
+#finalScore{
+    font-size:30px;
+    color:#00eaff;
+    margin:20px 0;
+}
+
+.home{
+    display:inline-block;
+    margin-top:20px;
+    color:#00eaff;
+    text-decoration:none;
+}
+
+.home:hover{
+    text-decoration:underline;
+}
+</style>
+</head>
+
+<body>
+
+<div class="game">
+
+    <h1>🧠 ÉMÌXS MIND RUSH</h1>
+
+    <div class="subtitle">
+        Think fast. Trust your mind.
+    </div>
+
+    <div class="stats">
+
+        <div class="stat">
+            SCORE
+            <b id="score">0</b>
+        </div>
+
+        <div class="stat">
+            LEVEL
+            <b id="levelNumber">1</b>
+        </div>
+
+        <div class="stat">
+            LIVES
+            <b id="lives">❤️❤️❤️</b>
+        </div>
+
+    </div>
+
+
+    <!-- START SCREEN -->
+
+    <div class="card" id="startScreen">
+
+        <h2>Welcome to Mind Rush 🌌</h2>
+
+        <p>
+            Answer the questions correctly and
+            climb through the levels.
+        </p>
+
+        <p>
+            You have <b>3 lives</b>.
+        </p>
+
+        <button id="startBtn">
+            START GAME
+        </button>
+
+    </div>
+
+
+    <!-- GAME SCREEN -->
+
+    <div class="card hidden" id="gameScreen">
+
+        <div id="level">
+            LEVEL 1
+        </div>
+
+        <div id="question">
+            Question
+        </div>
+
+        <div class="answers" id="answers"></div>
+
+        <div id="message"></div>
+
+    </div>
+
+
+    <!-- GAME OVER -->
+
+    <div class="card hidden" id="gameOver">
+
+        <h2>💥 GAME OVER</h2>
+
+        <p>Your mind ran out of energy.</p>
+
+        <div id="finalScore">
+            0
+        </div>
+
+        <button id="restartBtn">
+            PLAY AGAIN
+        </button>
+
+    </div>
+
+
+    <!-- WIN -->
+
+    <div class="card hidden" id="winScreen">
+
+        <h2>🌌 MIND MASTER</h2>
+
+        <p>
+            You completed every challenge!
+        </p>
+
+        <div id="finalWinScore">
+            0
+        </div>
+
+        <button id="restartWinBtn">
+            PLAY AGAIN
+        </button>
+
+    </div>
+
+
+    <a class="home" href="index.html">
+        ← Back to Home
+    </a>
+
+</div>
+
+
+<script>
+
+const questions = [
+
+    {
+        question:"What comes next? 2, 4, 8, 16, ?",
+        answers:["20","24","32","36"],
+        correct:2
+    },
+
+    {
+        question:"Which planet is known as the Red Planet?",
+        answers:["Earth","Mars","Venus","Jupiter"],
+        correct:1
+    },
+
+    {
+        question:"What is 9 × 7?",
+        answers:["56","63","72","69"],
+        correct:1
+    },
+
+    {
+        question:"Which one is NOT a programming language?",
+        answers:["Python","JavaScript","HTML","C++"],
+        correct:2
+    },
+
+    {
+        question:"What comes next? 1, 3, 6, 10, ?",
+        answers:["12","14","15","18"],
+        correct:2
+    },
+
+    {
+        question:"How many sides does a hexagon have?",
+        answers:["5","6","7","8"],
+        correct:1
+    },
+
+    {
+        question:"What is 144 ÷ 12?",
+        answers:["10","11","12","14"],
+        correct:2
+    },
+
+    {
+        question:"Which is the largest?",
+        answers:["1 KB","1 MB","1 GB","1 TB"],
+        correct:3
+    },
+
+    {
+        question:"What is the opposite of 'expand'?",
+        answers:["Grow","Increase","Contract","Create"],
+        correct:2
+    },
+
+    {
+        question:"What comes next? 5, 10, 20, 40, ?",
+        answers:["60","70","80","100"],
+        correct:2
+    }
+
+];
+
+
+let currentQuestion = 0;
+let score = 0;
+let lives = 3;
+
+
+/* ELEMENTS */
+
+const startScreen =
+    document.getElementById("startScreen");
+
+const gameScreen =
+    document.getElementById("gameScreen");
+
+const gameOver =
+    document.getElementById("gameOver");
+
+const winScreen =
+    document.getElementById("winScreen");
+
+const question =
+    document.getElementById("question");
+
+const answers =
+    document.getElementById("answers");
+
+const message =
+    document.getElementById("message");
+
+const scoreDisplay =
+    document.getElementById("score");
+
+const livesDisplay =
+    document.getElementById("lives");
+
+const levelDisplay =
+    document.getElementById("levelNumber");
+
+
+/* START */
+
+document
+.getElementById("startBtn")
+.addEventListener("click",startGame);
+
+
+function startGame(){
+
+    currentQuestion = 0;
+    score = 0;
+    lives = 3;
+
+    startScreen.classList.add("hidden");
+    gameOver.classList.add("hidden");
+    winScreen.classList.add("hidden");
+
+    gameScreen.classList.remove("hidden");
+
+    updateStats();
+
+    showQuestion();
+}
+
+
+/* SHOW QUESTION */
+
+function showQuestion(){
+
+    if(currentQuestion >= questions.length){
+
+        winGame();
+
+        return;
+    }
+
+
+    const q =
+        questions[currentQuestion];
+
+
+    question.textContent =
+        q.question;
+
+
+    levelDisplay.textContent =
+        currentQuestion + 1;
+
+
+    document.getElementById("level")
+        .textContent =
+        "LEVEL " + (currentQuestion + 1);
+
+
+    answers.innerHTML="";
+
+    message.textContent="";
+
+
+    q.answers.forEach(function(answer,index){
+
+        const button =
+            document.createElement("button");
+
+        button.type="button";
+
+        button.className="answer";
+
+        button.textContent=answer;
+
+
+        button.addEventListener(
+            "click",
+            function(){
+
+                checkAnswer(
+                    index,
+                    button
+                );
+
+            }
+        );
+
+
+        answers.appendChild(button);
+
+    });
+
+}
+
+
+/* CHECK ANSWER */
+
+function checkAnswer(index,button){
+
+    const q =
+        questions[currentQuestion];
+
+
+    const allButtons =
+        document.querySelectorAll(".answer");
+
+
+    allButtons.forEach(function(btn){
+
+        btn.disabled=true;
+
+    });
+
+
+    if(index === q.correct){
+
+        button.classList.add("correct");
+
+        score += 100;
+
+        message.textContent =
+            "✨ Correct! Your mind is sharp.";
+
+        message.style.color="#00e6a0";
+
+
+    }else{
+
+        button.classList.add("wrong");
+
+        lives--;
+
+        message.textContent =
+            "❌ Wrong answer. Keep going.";
+
+        message.style.color="#ff527f";
+
+
+        allButtons[q.correct]
+            .classList.add("correct");
+
+    }
+
+
+    updateStats();
+
+
+    setTimeout(function(){
+
+        if(lives <= 0){
+
+            loseGame();
+
+        }else{
+
+            currentQuestion++;
+
+            showQuestion();
+
+        }
+
+    },1000);
+
+}
+
+
+/* UPDATE STATS */
+
+function updateStats(){
+
+    scoreDisplay.textContent =
+        score;
+
+
+    let hearts="";
+
+    for(let i=0;i<lives;i++){
+
+        hearts += "❤️";
+
+    }
+
+    if(lives===0){
+
+        hearts="💔";
+
+    }
+
+
+    livesDisplay.textContent =
+        hearts;
+
+}
+
+
+/* GAME OVER */
+
+function loseGame(){
+
+    gameScreen.classList.add("hidden");
+
+    gameOver.classList.remove("hidden");
+
+    document.getElementById("finalScore")
+        .textContent =
+        "Score: " + score;
+
+}
+
+
+/* WIN */
+
+function winGame(){
+
+    gameScreen.classList.add("hidden");
+
+    winScreen.classList.remove("hidden");
+
+    document.getElementById("finalWinScore")
+        .textContent =
+        "🏆 Score: " + score;
+
+}
+
+
+/* RESTART */
+
+document
+.getElementById("restartBtn")
+.addEventListener("click",startGame);
+
+
+document
+.getElementById("restartWinBtn")
+.addEventListener("click",startGame);
+
+</script>
+
+</body>
+            </html>
