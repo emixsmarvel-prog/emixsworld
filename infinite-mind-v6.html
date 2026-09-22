@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>ÉMÌXS — Infinite Mind V6</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html,body{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  background:#020006;
+  color:white;
+  font-family:Arial,sans-serif;
+  touch-action:none;
+}
+
+canvas{
+  position:fixed;
+  inset:0;
+}
+
+#space{z-index:0}
+
+#universe{
+  position:absolute;
+  width:100%;
+  height:100%;
+  left:0;
+  top:0;
+  transform-origin:center;
+  z-index:2;
+}
+
+.header{
+  position:fixed;
+  top:18px;
+  left:0;
+  width:100%;
+  text-align:center;
+  z-index:20;
+  pointer-events:none;
+}
+
+.header h1{
+  font-size:13px;
+  letter-spacing:6px;
+}
+
+.header p{
+  font-size:8px;
+  letter-spacing:3px;
+  opacity:.45;
+  margin-top:5px;
+}
+
+.stats{
+  position:fixed;
+  top:18px;
+  right:15px;
+  z-index:20;
+  font-size:10px;
+  line-height:1.8;
+  text-align:right;
+  opacity:.8;
+}
+
+.core{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:150px;
+  height:150px;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  background:
+    radial-gradient(circle,
+    white 0%,
+    #cbc8ff 7%,
+    #796aff 20%,
+    #2c166f 48%,
+    #08000e 72%,
+    transparent 73%);
+  box-shadow:
+    0 0 30px #8d7cff,
+    0 0 80px #604aff,
+    0 0 160px #271060;
+  animation:pulse 3s infinite alternate;
+  z-index:10;
+}
+
+.core h1{
+  font-size:24px;
+  letter-spacing:4px;
+}
+
+.core .infinity{
+  font-size:35px;
+}
+
+.core small{
+  font-size:8px;
+  letter-spacing:4px;
+  opacity:.7;
+}
+
+@keyframes pulse{
+  to{
+    transform:translate(-50%,-50%) scale(1.08);
+  }
+}
+
+.orbit{
+  position:absolute;
+  left:50%;
+  top:50%;
+  border:1px solid rgba(150,130,255,.18);
+  border-radius:50%;
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+}
+
+.o1{width:260px;height:260px}
+.o2{width:390px;height:390px}
+.o3{width:520px;height:520px}
+.o4{width:650px;height:650px}
+
+.planet{
+  position:absolute;
+  width:76px;
+  height:76px;
+  left:50%;
+  top:50%;
+  margin-left:-38px;
+  margin-top:-38px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.35);
+  color:white;
+  font-size:8px;
+  font-weight:bold;
+  letter-spacing:1px;
+  cursor:pointer;
+  z-index:12;
+  box-shadow:0 0 20px rgba(130,100,255,.8);
+  transition:transform .2s;
+}
+
+.planet:hover{
+  transform:scale(1.15);
+}
+
+.dreams{
+  background:radial-gradient(circle at 30% 25%,white,#65a8ff 15%,#29115c 55%,#05000b);
+}
+
+.thoughts{
+  background:radial-gradient(circle at 30% 25%,white,#b76cff 15%,#35105c 55%,#05000b);
+}
+
+.emotions{
+  background:radial-gradient(circle at 30% 25%,white,#ff68a8 15%,#5c103c 55%,#080008);
+}
+
+.memories{
+  background:radial-gradient(circle at 30% 25%,white,#5de0cf 15%,#103d47 55%,#02090b);
+}
+
+.creativity{
+  background:radial-gradient(circle at 30% 25%,white,#ffd35c 15%,#65350b 55%,#090400);
+}
+
+.unknown{
+  background:radial-gradient(circle at 30% 25%,white,#ff45d0 10%,#5a073f 35%,#050008);
+  box-shadow:0 0 30px #ff35d0;
+}
+
+.secret{
+  background:radial-gradient(circle at 30% 25%,white,#ff3333 10%,#570000 40%,#050000);
+  box-shadow:0 0 30px red;
+  display:none;
+}
+
+.controls{
+  position:fixed;
+  bottom:18px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:30;
+  display:flex;
+  gap:6px;
+}
+
+button{
+  font-family:inherit;
+}
+
+.controls button,
+.action{
+  border:1px solid rgba(255,255,255,.3);
+  background:rgba(0,0,0,.75);
+  color:white;
+  padding:9px 13px;
+  border-radius:22px;
+  cursor:pointer;
+}
+
+.discover{
+  position:fixed;
+  top:62px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:25;
+  border:1px solid #765cff;
+  background:rgba(20,10,45,.8);
+  color:white;
+  padding:9px 17px;
+  border-radius:25px;
+  cursor:pointer;
+}
+
+.mapBtn{
+  position:fixed;
+  bottom:18px;
+  right:15px;
+  z-index:30;
+  border:1px solid #765cff;
+  background:rgba(0,0,0,.75);
+  color:white;
+  padding:9px 14px;
+  border-radius:22px;
+}
+
+.overlay{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(0,0,0,.88);
+  backdrop-filter:blur(10px);
+}
+
+.box{
+  width:min(430px,100%);
+  padding:28px;
+  text-align:center;
+  border:1px solid #765cff;
+  border-radius:25px;
+  background:linear-gradient(145deg,#12071e,#030309);
+  box-shadow:0 0 60px #352080;
+}
+
+.box h2{
+  font-size:28px;
+  letter-spacing:4px;
+  margin-bottom:15px;
+}
+
+.box p{
+  color:#ccc;
+  line-height:1.6;
+  margin-bottom:20px;
+}
+
+.box button{
+  border:0;
+  border-radius:22px;
+  padding:11px 18px;
+  margin:4px;
+  background:#7158ff;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+#world{
+  position:fixed;
+  inset:0;
+  z-index:80;
+  display:none;
+  background:#020006;
+}
+
+#worldCanvas{
+  position:absolute;
+  inset:0;
+}
+
+.back{
+  position:absolute;
+  top:18px;
+  left:18px;
+  z-index:10;
+  border:1px solid #777;
+  border-radius:20px;
+  background:rgba(0,0,0,.7);
+  color:white;
+  padding:10px 18px;
+}
+
+.worldInfo{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:min(500px,90%);
+  text-align:center;
+  z-index:5;
+}
+
+.worldInfo h1{
+  font-size:40px;
+  letter-spacing:5px;
+  text-shadow:0 0 30px #8c7cff;
+}
+
+.worldInfo p{
+  margin-top:18px;
+  color:#ccc;
+  line-height:1.7;
+}
+
+#map{
+  position:fixed;
+  inset:0;
+  z-index:110;
+  display:none;
+  background:rgba(2,0,8,.97);
+  padding:30px 20px;
+  overflow:auto;
+}
+
+#map h2{
+  text-align:center;
+  letter-spacing:4px;
+}
+
+.mapGrid{
+  max-width:500px;
+  margin:25px auto;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+
+.mapItem{
+  border:1px solid #443579;
+  border-radius:18px;
+  padding:20px 8px;
+  text-align:center;
+  background:#080512;
+}
+
+.mapItem strong{
+  display:block;
+  margin-bottom:8px;
+}
+
+.mapItem span{
+  font-size:10px;
+  opacity:.5;
+}
+
+.closeMap{
+  display:block;
+  margin:auto;
+  border:1px solid #777;
+  border-radius:20px;
+  padding:10px 18px;
+  background:#080808;
+  color:white;
+}
+
+@media(max-width:600px){
+
+  .planet{
+    width:62px;
+    height:62px;
+    margin-left:-31px;
+    margin-top:-31px;
+    font-size:7px;
+  }
+
+  .core{
+    width:125px;
+    height:125px;
+  }
+
+  .core h1{
+    font-size:20px;
+  }
+
+  .o1{width:210px;height:210px}
+  .o2{width:320px;height:320px}
+  .o3{width:430px;height:430px}
+  .o4{width:540px;height:540px}
+
+  .worldInfo h1{
+    font-size:28px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="space"></canvas>
+
+<div id="universe">
+
+  <div class="header">
+    <h1>ÉMÌXS — INFINITE MIND</h1>
+    <p>V6 • EXPLORE • DISCOVER • CREATE</p>
+  </div>
+
+  <div class="stats">
+    FRAGMENTS: <span id="fragmentCount">0</span><br>
+    WORLDS: <span id="worldCount">0</span>/7
+  </div>
+
+  <button class="discover" onclick="discover()">✦ FIND FRAGMENT</button>
+
+  <div class="orbit o1"></div>
+  <div class="orbit o2"></div>
+  <div class="orbit o3"></div>
+  <div class="orbit o4"></div>
+
+  <div class="core">
+    <h1>ÉMÌXS</h1>
+    <div class="infinity">♾️</div>
+    <small>MIND CORE</small>
+  </div>
+
+  <button class="planet dreams" id="dreams">DREAMS</button>
+  <button class="planet thoughts" id="thoughts">THOUGHTS</button>
+  <button class="planet emotions" id="emotions">EMOTIONS</button>
+  <button class="planet memories" id="memories">MEMORIES</button>
+  <button class="planet creativity" id="creativity">CREATIVITY</button>
+  <button class="planet unknown" id="unknown">UNKNOWN</button>
+  <button class="planet secret" id="secret">SECRET</button>
+
+</div>
+
+<div class="controls">
+  <button onclick="resetView()">⌂</button>
+  <button onclick="zoomOut()">−</button>
+  <button onclick="zoomIn()">+</button>
+</div>
+
+<button class="mapBtn" onclick="openMap()">🗺 MAP</button>
+
+<div id="panel" class="overlay">
+
+  <div class="box">
+    <h2 id="panelTitle"></h2>
+    <p id="panelText"></p>
+    <button onclick="enterWorld()">ENTER WORLD ♾️</button>
+    <button onclick="closePanel()">CLOSE</button>
+  </div>
+
+</div>
+
+<div id="challenge" class="overlay">
+
+  <div class="box">
+
+    <h2>🧩 MIND CHALLENGE</h2>
+
+    <p id="challengeText"></p>
+
+    <button onclick="challengeAnswer(0)">A</button>
+    <button onclick="challengeAnswer(1)">B</button>
+    <button onclick="challengeAnswer(2)">C</button>
+
+  </div>
+
+</div>
+
+<div id="world">
+
+  <button class="back" onclick="leaveWorld()">← BACK</button>
+
+  <canvas id="worldCanvas"></canvas>
+
+  <div class="worldInfo">
+
+    <h1 id="worldTitle"></h1>
+
+    <p id="worldText"></p>
+
+  </div>
+
+</div>
+
+<div id="map">
+
+  <h2>♾️ INFINITE MAP</h2>
+
+  <div class="mapGrid">
+
+    <div class="mapItem">
+      <strong>🌙 DREAMS</strong>
+      <span>Realm of possibilities</span>
+    </div>
+
+    <div class="mapItem">
+      <strong>💭 THOUGHTS</strong>
+      <span>Realm of ideas</span>
+    </div>
+
+    <div class="mapItem">
+      <strong>💗 EMOTIONS</strong>
+      <span>Realm of feelings</span>
+    </div>
+
+    <div class="mapItem">
+      <strong>🧠 MEMORIES</strong>
+      <span>Realm of moments</span>
+    </div>
+
+    <div class="mapItem">
+      <strong>✨ CREATIVITY</strong>
+      <span>Realm of creation</span>
+    </div>
+
+    <div class="mapItem">
+      <strong>❓ UNKNOWN</strong>
+      <span>Realm of mystery</span>
+    </div>
+
+    <div class="mapItem">
+      <strong>🔴 SECRET</strong>
+      <span>Hidden dimension</span>
+    </div>
+
+  </div>
+
+  <button class="closeMap" onclick="closeMap()">CLOSE MAP</button>
+
+</div>
+
+<script>
+
+/* =========================
+   SAVE SYSTEM
+========================= */
+
+let saved=JSON.parse(
+  localStorage.getItem("emixsInfiniteMindV6") || "{}"
+);
+
+let fragments=saved.fragments || 0;
+
+let discovered=new Set(
+  saved.discovered || []
+);
+
+function saveGame(){
+
+  localStorage.setItem(
+    "emixsInfiniteMindV6",
+    JSON.stringify({
+      fragments:fragments,
+      discovered:[...discovered]
+    })
+  );
+
+  updateStats();
+}
+
+function updateStats(){
+
+  document.getElementById("fragmentCount")
+    .textContent=fragments;
+
+  document.getElementById("worldCount")
+    .textContent=discovered.size;
+
+}
+
+updateStats();
+
+/* =========================
+   SPACE
+========================= */
+
+const canvas=document.getElementById("space");
+const ctx=canvas.getContext("2d");
+
+let W,H;
+let stars=[];
+let shooting=[];
+
+function resize(){
+
+  W=canvas.width=innerWidth;
+  H=canvas.height=innerHeight;
+
+  stars=[];
+
+  for(let i=0;i<240;i++){
+
+    stars.push({
+      x:Math.random()*W,
+      y:Math.random()*H,
+      r:Math.random()*1.4,
+      speed:Math.random()*.35+.05
+    });
+
+  }
+}
+
+resize();
+addEventListener("resize",resize);
+
+function addShootingStar(){
+
+  shooting.push({
+    x:Math.random()*W,
+    y:Math.random()*H*.5,
+    vx:8,
+    vy:4,
+    life:0
+  });
+
+}
+
+setInterval(addShootingStar,3200);
+
+function spaceLoop(){
+
+  ctx.fillStyle="rgba(2,0,8,.28)";
+  ctx.fillRect(0,0,W,H);
+
+  for(const s of stars){
+
+    s.y+=s.speed;
+
+    if(s.y>H){
+      s.y=0;
+      s.x=Math.random()*W;
+    }
+
+    ctx.globalAlpha=Math.random()*.7+.2;
+    ctx.fillStyle="white";
+
+    ctx.beginPath();
+    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fill();
+
+  }
+
+  for(let i=shooting.length-1;i>=0;i--){
+
+    const s=shooting[i];
+
+    s.x+=s.vx;
+    s.y+=s.vy;
+    s.life++;
+
+    ctx.strokeStyle="rgba(255,255,255,.8)";
+    ctx.lineWidth=2;
+
+    ctx.beginPath();
+    ctx.moveTo(s.x,s.y);
+    ctx.lineTo(s.x-45,s.y-22);
+    ctx.stroke();
+
+    if(s.life>25)
+      shooting.splice(i,1);
+  }
+
+  ctx.globalAlpha=1;
+
+  requestAnimationFrame(spaceLoop);
+}
+
+spaceLoop();
+
+/* =========================
+   ORBITING PLANETS
+========================= */
+
+const planets=[
+  {
+    id:"dreams",
+    radius:130,
+    speed:.00035,
+    angle:0
+  },
+  {
+    id:"thoughts",
+    radius:195,
+    speed:-.00028,
+    angle:1.2
+  },
+  {
+    id:"emotions",
+    radius:260,
+    speed:.00022,
+    angle:2.5
+  },
+  {
+    id:"memories",
+    radius:325,
+    speed:-.00018,
+    angle:3.7
+  },
+  {
+    id:"creativity",
+    radius:390,
+    speed:.00015,
+    angle:4.7
+  },
+  {
+    id:"unknown",
+    radius:455,
+    speed:-.00012,
+    angle:5.5
+  }
+];
+
+function orbitLoop(){
+
+  const centerX=innerWidth/2;
+  const centerY=innerHeight/2;
+
+  planets.forEach(p=>{
+
+    p.angle+=p.speed*16;
+
+    const x=
+      centerX+
+      Math.cos(p.angle)*p.radius;
+
+    const y=
+      centerY+
+      Math.sin(p.angle)*p.radius*.62;
+
+    const el=document.getElementById(p.id);
+
+    el.style.left=x+"px";
+    el.style.top=y+"px";
+
+  });
+
+  requestAnimationFrame(orbitLoop);
+}
+
+orbitLoop();
+
+/* =========================
+   WORLD DATA
+========================= */
+
+const worlds={
+
+  dreams:{
+    title:"DREAMS",
+    text:"A realm where impossible ideas become possible."
+  },
+
+  thoughts:{
+    title:"THOUGHTS",
+    text:"Every question can become the beginning of another universe."
+  },
+
+  emotions:{
+    title:"EMOTIONS",
+    text:"A world shaped by everything the mind can feel."
+  },
+
+  memories:{
+    title:"MEMORIES",
+    text:"Moments preserved inside the infinite mind."
+  },
+
+  creativity:{
+    title:"CREATIVITY",
+    text:"Where imagination turns into stories, inventions and worlds."
+  },
+
+  unknown:{
+    title:"THE UNKNOWN",
+    text:"Something is waiting beyond what you already understand."
+  },
+
+  secret:{
+    title:"THE SECRET DIMENSION",
+    text:"You found a hidden part of the Infinite Mind."
+  }
+
+};
+
+let selected="";
+
+/* =========================
+   PLANET CLICK
+========================= */
+
+document.querySelectorAll(".planet").forEach(planet=>{
+
+  planet.addEventListener("click",()=>{
+
+    selected=planet.id;
+
+    if(!discovered.has(selected)){
+
+      discovered.add(selected);
+
+      fragments+=2;
+
+      saveGame();
+
+    }
+
+    document.getElementById("panelTitle")
+      .textContent=worlds[selected].title;
+
+    document.getElementById("panelText")
+      .textContent=worlds[selected].text;
+
+    document.getElementById("panel")
+      .style.display="flex";
+
+  });
+
+});
+
+/* =========================
+   PANEL
+========================= */
+
+function closePanel(){
+
+  document.getElementById("panel")
+    .style.display="none";
+
+}
+
+function enterWorld(){
+
+  closePanel();
+
+  document.getElementById("world")
+    .style.display="block";
+
+  document.getElementById("worldTitle")
+    .textContent=worlds[selected].title;
+
+  document.getElementById("worldText")
+    .textContent=worlds[selected].text;
+
+  startWorld();
+
+}
+
+function leaveWorld(){
+
+  document.getElementById("world")
+    .style.display="none";
+
+}
+
+/* =========================
+   FRAGMENT DISCOVERY
+========================= */
+
+function discover(){
+
+  const messages=[
+    "You found a forgotten idea.",
+    "A new possibility has appeared.",
+    "The Mind Core became stronger.",
+    "You discovered a fragment of imagination.",
+    "Something moved inside the unknown.",
+    "A hidden thought crossed the universe."
+  ];
+
+  fragments++;
+
+  saveGame();
+
+  alert(
+    "✦ FRAGMENT FOUND\n\n"+
+    messages[Math.floor(Math.random()*messages.length)]
+  );
+
+  checkSecret();
+
+}
+
+/* =========================
+   SECRET UNLOCK
+========================= */
+
+function checkSecret(){
+
+  if(fragments>=10 || discovered.size>=5){
+
+    document.getElementById("secret")
+      .style.display="block";
+
+  }
+
+}
+
+/* =========================
+   CHALLENGE
+========================= */
+
+let answer=0;
+
+function challenge(){
+
+  const questions=[
+
+    {
+      q:"What has no beginning and no end?",
+      a:["A circle","A book","A tree"],
+      correct:0
+    },
+
+    {
+      q:"Which world represents imagination?",
+      a:["Creativity","Memories","Emotions"],
+      correct:0
+    },
+
+    {
+      q:"What powers the Infinite Mind?",
+      a:["Imagination","Gravity","Silence"],
+      correct:0
+    }
+
+  ];
+
+  const q=
+    questions[
+      Math.floor(Math.random()*questions.length)
+    ];
+
+  answer=q.correct;
+
+  document.getElementById("challengeText")
+    .textContent=
+      q.q+
+      "\n\nA) "+q.a[0]+
+      "\nB) "+q.a[1]+
+      "\nC) "+q.a[2];
+
+  document.getElementById("challenge")
+    .style.display="flex";
+
+}
+
+function challengeAnswer(choice){
+
+  if(choice===answer){
+
+    fragments+=3;
+
+    saveGame();
+
+    alert("✨ Correct! +3 Mind Fragments");
+
+  }else{
+
+    alert("Not this time. The Mind keeps learning.");
+
+  }
+
+  document.getElementById("challenge")
+    .style.display="none";
+
+  checkSecret();
+
+}
+
+/* =========================
+   MAP
+========================= */
+
+function openMap(){
+
+  document.getElementById("map")
+    .style.display="block";
+
+}
+
+function closeMap(){
+
+  document.getElementById("map")
+    .style.display="none";
+
+}
+
+/* =========================
+   ZOOM
+========================= */
+
+let zoom=1;
+
+function zoomIn(){
+
+  zoom=Math.min(1.3,zoom+.1);
+
+  document.getElementById("universe")
+    .style.transform=`scale(${zoom})`;
+
+}
+
+function zoomOut(){
+
+  zoom=Math.max(.75,zoom-.1);
+
+  document.getElementById("universe")
+    .style.transform=`scale(${zoom})`;
+
+}
+
+function resetView(){
+
+  zoom=1;
+
+  document.getElementById("universe")
+    .style.transform="scale(1)";
+
+}
+
+/* =========================
+   DRAG UNIVERSE
+========================= */
+
+let dragging=false;
+let startX=0;
+let startY=0;
+let moveX=0;
+let moveY=0;
+
+document.addEventListener("pointerdown",e=>{
+
+  if(
+    e.target.classList.contains("planet") ||
+    e.target.tagName==="BUTTON"
+  ) return;
+
+  dragging=true;
+
+  startX=e.clientX-moveX;
+  startY=e.clientY-moveY;
+
+});
+
+document.addEventListener("pointermove",e=>{
+
+  if(!dragging) return;
+
+  moveX=e.clientX-startX;
+  moveY=e.clientY-startY;
+
+  document.getElementById("universe").style.marginLeft=
+    moveX+"px";
+
+  document.getElementById("universe").style.marginTop=
+    moveY+"px";
+
+});
+
+document.addEventListener("pointerup",()=>{
+
+  dragging=false;
+
+});
+
+/* =========================
+   WORLD CANVAS
+========================= */
+
+const wc=document.getElementById("worldCanvas");
+const wctx=wc.getContext("2d");
+
+function resizeWorld(){
+
+  wc.width=innerWidth;
+  wc.height=innerHeight;
+
+}
+
+resizeWorld();
+addEventListener("resize",resizeWorld);
+
+function startWorld(){
+
+  function loop(){
+
+    if(
+      document.getElementById("world")
+      .style.display==="none"
+    ) return;
+
+    wctx.fillStyle="rgba(2,0,8,.2)";
+    wctx.fillRect(
+      0,
+      0,
+      wc.width,
+      wc.height
+    );
+
+    const cx=wc.width/2;
+    const cy=wc.height/2;
+
+    for(let i=0;i<100;i++){
+
+      const angle=Math.random()*Math.PI*2;
+
+      const distance=
+        Math.random()*
+        Math.min(wc.width,wc.height);
+
+      const x=
+        cx+Math.cos(angle)*distance;
+
+      const y=
+        cy+Math.sin(angle)*distance;
+
+      wctx.fillStyle=
+        "rgba(255,255,255,.4)";
+
+      wctx.fillRect(x,y,1,1);
+
+    }
+
+    requestAnimationFrame(loop);
+
+  }
+
+  loop();
+
+}
+
+/* =========================
+   STARTUP
+========================= */
+
+checkSecret();
+
+</script>
+
+</body>
+  </html>
