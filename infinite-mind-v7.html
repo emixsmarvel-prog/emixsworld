@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infinite Mind V7 — The Living Mind</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+:root{
+  --accent:#7c5cff;
+  --accent2:#00eaff;
+  --bg:#02030a;
+  --panel:rgba(10,12,30,.92);
+  --text:#fff;
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+  overflow:hidden;
+  min-height:100vh;
+}
+
+/* SPACE */
+#space{
+  position:fixed;
+  inset:0;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at center,
+    rgba(124,92,255,.13),
+    transparent 35%),
+    radial-gradient(circle at 20% 20%,
+    rgba(0,234,255,.08),
+    transparent 30%),
+    #02030a;
+}
+
+.star{
+  position:absolute;
+  width:2px;
+  height:2px;
+  background:white;
+  border-radius:50%;
+  animation:twinkle 2s infinite alternate;
+}
+
+@keyframes twinkle{
+  from{opacity:.15}
+  to{opacity:1}
+}
+
+/* UNIVERSE */
+#universe{
+  position:absolute;
+  width:900px;
+  height:900px;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  transition:transform .2s ease;
+}
+
+/* CORE */
+#core{
+  position:absolute;
+  width:150px;
+  height:150px;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  background:
+    radial-gradient(circle,
+    white 0%,
+    var(--accent2) 15%,
+    var(--accent) 40%,
+    #160b42 70%,
+    transparent 72%);
+  box-shadow:
+    0 0 25px var(--accent2),
+    0 0 70px var(--accent),
+    0 0 130px rgba(124,92,255,.4);
+  animation:corePulse 3s infinite ease-in-out;
+  z-index:5;
+}
+
+#coreText{
+  position:absolute;
+  width:100%;
+  text-align:center;
+  top:54px;
+  font-weight:bold;
+  font-size:15px;
+  text-shadow:0 0 10px white;
+}
+
+#level{
+  position:absolute;
+  width:100%;
+  text-align:center;
+  top:76px;
+  font-size:11px;
+  opacity:.8;
+}
+
+@keyframes corePulse{
+  0%,100%{transform:translate(-50%,-50%) scale(1)}
+  50%{transform:translate(-50%,-50%) scale(1.08)}
+}
+
+/* ORBITS */
+.orbit{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  border:1px solid rgba(124,92,255,.25);
+  border-radius:50%;
+}
+
+.o1{width:280px;height:280px}
+.o2{width:420px;height:420px}
+.o3{width:570px;height:570px}
+.o4{width:720px;height:720px}
+
+/* PLANETS */
+.planet{
+  position:absolute;
+  width:78px;
+  height:78px;
+  border-radius:50%;
+  border:none;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+  transform:translate(-50%,-50%);
+  box-shadow:0 0 25px currentColor;
+  z-index:10;
+  transition:.25s;
+}
+
+.planet:hover{
+  transform:translate(-50%,-50%) scale(1.15);
+}
+
+.p1{background:radial-gradient(circle at 30% 30%,#fff,#7c5cff,#160b42)}
+.p2{background:radial-gradient(circle at 30% 30%,#fff,#00eaff,#003b52)}
+.p3{background:radial-gradient(circle at 30% 30%,#fff,#ff4fa3,#52002b)}
+.p4{background:radial-gradient(circle at 30% 30%,#fff,#ffb300,#542800)}
+.p5{background:radial-gradient(circle at 30% 30%,#fff,#42ff8b,#003d1c)}
+.p6{background:radial-gradient(circle at 30% 30%,#fff,#a76cff,#250052)}
+.p7{background:radial-gradient(circle at 30% 30%,#fff,#ff3b3b,#4d0000)}
+
+#secretPlanet{
+  display:none;
+  background:radial-gradient(circle at 30% 30%,#fff,#ff00ff,#300030);
+}
+
+/* HUD */
+#hud{
+  position:fixed;
+  top:15px;
+  left:15px;
+  z-index:50;
+  background:rgba(0,0,0,.45);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:15px;
+  padding:12px 15px;
+  font-size:13px;
+}
+
+#hud strong{
+  color:var(--accent2);
+}
+
+/* BUTTONS */
+#buttons{
+  position:fixed;
+  bottom:15px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:50;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:8px;
+  width:95%;
+  max-width:700px;
+}
+
+button.control{
+  border:1px solid rgba(255,255,255,.2);
+  background:rgba(10,10,30,.85);
+  color:white;
+  padding:10px 13px;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:bold;
+  font-size:11px;
+  backdrop-filter:blur(8px);
+}
+
+button.control:hover{
+  background:var(--accent);
+}
+
+/* MODAL */
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:100;
+  background:rgba(0,0,0,.75);
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.modalBox{
+  width:min(500px,95%);
+  max-height:85vh;
+  overflow:auto;
+  background:var(--panel);
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:20px;
+  padding:22px;
+  box-shadow:0 0 50px rgba(124,92,255,.3);
+}
+
+.modalBox h2{
+  margin-bottom:12px;
+  color:var(--accent2);
+}
+
+.modalBox p{
+  line-height:1.6;
+  opacity:.9;
+}
+
+.close{
+  float:right;
+  background:none;
+  border:none;
+  color:white;
+  font-size:22px;
+  cursor:pointer;
+}
+
+input,textarea,select{
+  width:100%;
+  margin:8px 0 12px;
+  padding:12px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.15);
+  background:#080914;
+  color:white;
+  outline:none;
+}
+
+textarea{
+  min-height:140px;
+  resize:vertical;
+}
+
+.action{
+  border:none;
+  background:var(--accent);
+  color:white;
+  padding:11px 16px;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+/* ENTITY */
+.entity{
+  position:absolute;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#fff;
+  box-shadow:0 0 15px #fff;
+  pointer-events:none;
+  animation:entityFloat 5s infinite ease-in-out;
+}
+
+@keyframes entityFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-30px)}
+}
+
+/* NOTIFICATION */
+#notice{
+  position:fixed;
+  top:75px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:200;
+  background:rgba(10,10,25,.95);
+  border:1px solid var(--accent2);
+  padding:12px 18px;
+  border-radius:12px;
+  display:none;
+  text-align:center;
+}
+
+/* MOBILE */
+@media(max-width:600px){
+
+  #universe{
+    width:650px;
+    height:650px;
+  }
+
+  .o1{width:210px;height:210px}
+  .o2{width:320px;height:320px}
+  .o3{width:440px;height:440px}
+  .o4{width:560px;height:560px}
+
+  .planet{
+    width:62px;
+    height:62px;
+    font-size:9px;
+  }
+
+  #core{
+    width:115px;
+    height:115px;
+  }
+
+  #coreText{
+    top:39px;
+    font-size:12px;
+  }
+
+  #level{
+    top:59px;
+    font-size:9px;
+  }
+
+  #hud{
+    font-size:11px;
+  }
+
+  button.control{
+    padding:8px 9px;
+    font-size:9px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div id="space">
+
+  <div id="universe">
+
+    <div class="orbit o1"></div>
+    <div class="orbit o2"></div>
+    <div class="orbit o3"></div>
+    <div class="orbit o4"></div>
+
+    <div id="core">
+      <div id="coreText">ÉMÌXS MIND</div>
+      <div id="level">LEVEL 1</div>
+    </div>
+
+    <button class="planet p1" id="planetDreams" onclick="openWorld('DREAMS')">
+      DREAMS
+    </button>
+
+    <button class="planet p2" id="planetThoughts" onclick="openWorld('THOUGHTS')">
+      THOUGHTS
+    </button>
+
+    <button class="planet p3" id="planetEmotions" onclick="openWorld('EMOTIONS')">
+      EMOTIONS
+    </button>
+
+    <button class="planet p4" id="planetMemories" onclick="openWorld('MEMORIES')">
+      MEMORIES
+    </button>
+
+    <button class="planet p5" id="planetCreativity" onclick="openWorld('CREATIVITY')">
+      CREATIVITY
+    </button>
+
+    <button class="planet p6" id="planetUnknown" onclick="openWorld('UNKNOWN')">
+      UNKNOWN
+    </button>
+
+    <button class="planet p7" id="secretPlanet" onclick="openWorld('SECRET')">
+      SECRET
+    </button>
+
+  </div>
+</div>
+
+<div id="hud">
+  🧠 <strong>INFINITE MIND V7</strong><br>
+  Fragments: <span id="fragments">0</span><br>
+  Worlds: <span id="worldCount">0</span>/7<br>
+  Achievements: <span id="achievementCount">0</span>
+</div>
+
+<div id="notice"></div>
+
+<div id="buttons">
+  <button class="control" onclick="findFragment()">✨ FIND FRAGMENT</button>
+  <button class="control" onclick="challenge()">🧩 CHALLENGE</button>
+  <button class="control" onclick="journal()">📖 JOURNAL</button>
+  <button class="control" onclick="buildPlanet()">🪐 BUILD PLANET</button>
+  <button class="control" onclick="theme()">🎨 THEME</button>
+  <button class="control" onclick="showMap()">🗺️ MAP</button>
+  <button class="control" onclick="resetMind()">♻️ RESET</button>
+</div>
+
+<!-- WORLD MODAL -->
+<div class="modal" id="worldModal">
+  <div class="modalBox">
+    <button class="close" onclick="closeModal('worldModal')">×</button>
+    <h2 id="worldTitle"></h2>
+    <p id="worldText"></p>
+    <br>
+    <button class="action" onclick="discoverWorld()">✨ Discover World</button>
+  </div>
+</div>
+
+<!-- JOURNAL -->
+<div class="modal" id="journalModal">
+  <div class="modalBox">
+    <button class="close" onclick="closeModal('journalModal')">×</button>
+    <h2>📖 Mind Journal</h2>
+    <p>Write anything you want your Infinite Mind to remember.</p>
+    <textarea id="journalText" placeholder="Write your thought..."></textarea>
+    <button class="action" onclick="saveJournal()">SAVE ENTRY</button>
+    <br><br>
+    <div id="journalEntries"></div>
+  </div>
+</div>
+
+<!-- CHALLENGE -->
+<div class="modal" id="challengeModal">
+  <div class="modalBox">
+    <button class="close" onclick="closeModal('challengeModal')">×</button>
+    <h2>🧩 Mind Challenge</h2>
+    <p id="question"></p>
+
+    <input id="answer" placeholder="Type your answer...">
+
+    <button class="action" onclick="checkAnswer()">SUBMIT</button>
+  </div>
+</div>
+
+<!-- BUILD PLANET -->
+<div class="modal" id="planetModal">
+  <div class="modalBox">
+    <button class="close" onclick="closeModal('planetModal')">×</button>
+    <h2>🪐 Build Your Planet</h2>
+
+    <input id="planetName" placeholder="Planet name">
+
+    <select id="planetStyle">
+      <option value="purple">Purple</option>
+      <option value="blue">Blue</option>
+      <option value="green">Green</option>
+      <option value="red">Red</option>
+      <option value="pink">Pink</option>
+    </select>
+
+    <button class="action" onclick="createPlanet()">CREATE PLANET</button>
+  </div>
+</div>
+
+<!-- THEME -->
+<div class="modal" id="themeModal">
+  <div class="modalBox">
+    <button class="close" onclick="closeModal('themeModal')">×</button>
+    <h2>🎨 Universe Theme</h2>
+
+    <select id="themeSelect">
+      <option value="purple">Cosmic Purple</option>
+      <option value="blue">Deep Blue</option>
+      <option value="red">Red Universe</option>
+      <option value="green">Emerald Mind</option>
+    </select>
+
+    <button class="action" onclick="applyTheme()">APPLY</button>
+  </div>
+</div>
+
+<!-- MAP -->
+<div class="modal"
