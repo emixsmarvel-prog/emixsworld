@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Émìxs Game</title>
+<title>ÉMÌXS Mind Game</title>
 
 <style>
 body{
     margin:0;
+    min-height:100vh;
     background:#05051a;
     color:white;
     font-family:Arial,sans-serif;
@@ -22,13 +23,15 @@ body{
 
 h1{
     color:#00ffff;
+    text-shadow:0 0 15px #00ffff;
 }
 
 .card{
     background:#111633;
     padding:25px;
-    border-radius:15px;
+    border-radius:18px;
     margin-top:20px;
+    border:1px solid #303b80;
 }
 
 button{
@@ -41,15 +44,27 @@ button{
     background:#303b80;
     color:white;
     font-size:16px;
+    cursor:pointer;
 }
 
 button:active{
+    transform:scale(.96);
     background:#704cff;
 }
 
 #score{
     color:#00ffff;
     font-size:20px;
+}
+
+#soundButton{
+    background:#222852;
+    font-size:14px;
+}
+
+#result{
+    min-height:25px;
+    font-weight:bold;
 }
 </style>
 </head>
@@ -60,11 +75,17 @@ button:active{
 
 <h1>🧠 ÉMÌXS MIND GAME</h1>
 
-<p>Welcome to your first game!</p>
+<p>Think fast. Trust your mind.</p>
+
+<button id="soundButton" onclick="toggleSound()">
+🔊 Sound: ON
+</button>
 
 <div class="card">
 
-<h2 id="question">What is 5 + 5?</h2>
+<h2 id="question">
+What is 5 + 5?
+</h2>
 
 <button onclick="answer(10)">10</button>
 <button onclick="answer(15)">15</button>
@@ -78,32 +99,233 @@ button:active{
 
 </div>
 
+
 <script>
 
 let score = 0;
+let soundOn = true;
+let gameFinished = false;
+
+
+/* SOUND ENGINE */
+
+let audioContext;
+
+
+function startAudio(){
+
+    if(!audioContext){
+
+        audioContext =
+            new (window.AudioContext ||
+            window.webkitAudioContext)();
+
+    }
+
+    if(audioContext.state === "suspended"){
+
+        audioContext.resume();
+
+    }
+}
+
+
+function playTone(
+    frequency,
+    duration,
+    type="sine"
+){
+
+    if(!soundOn) return;
+
+    startAudio();
+
+    const oscillator =
+        audioContext.createOscillator();
+
+    const gain =
+        audioContext.createGain();
+
+    oscillator.type = type;
+
+    oscillator.frequency.value =
+        frequency;
+
+    gain.gain.setValueAtTime(
+        0.15,
+        audioContext.currentTime
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        0.001,
+        audioContext.currentTime + duration
+    );
+
+    oscillator.connect(gain);
+
+    gain.connect(audioContext.destination);
+
+    oscillator.start();
+
+    oscillator.stop(
+        audioContext.currentTime + duration
+    );
+}
+
+
+/* CLICK SOUND */
+
+function clickSound(){
+
+    playTone(500,0.08,"square");
+
+}
+
+
+/* CORRECT SOUND */
+
+function correctSound(){
+
+    playTone(700,0.12);
+
+    setTimeout(function(){
+
+        playTone(1000,0.18);
+
+    },120);
+
+}
+
+
+/* WRONG SOUND */
+
+function wrongSound(){
+
+    playTone(180,0.25,"sawtooth");
+
+}
+
+
+/* WIN SOUND */
+
+function winSound(){
+
+    playTone(600,0.15);
+
+    setTimeout(function(){
+        playTone(800,0.15);
+    },150);
+
+    setTimeout(function(){
+        playTone(1000,0.25);
+    },300);
+
+}
+
+
+/* GAME OVER SOUND */
+
+function gameOverSound(){
+
+    playTone(400,0.2);
+
+    setTimeout(function(){
+        playTone(250,0.35);
+    },200);
+
+}
+
+
+/* TOGGLE SOUND */
+
+function toggleSound(){
+
+    soundOn = !soundOn;
+
+    const button =
+        document.getElementById("soundButton");
+
+    if(soundOn){
+
+        button.innerHTML =
+            "🔊 Sound: ON";
+
+        startAudio();
+        clickSound();
+
+    }else{
+
+        button.innerHTML =
+            "🔇 Sound: OFF";
+
+    }
+
+}
+
+
+/* ANSWER */
 
 function answer(number){
+
+    if(gameFinished) return;
+
+    clickSound();
+
 
     if(number === 10){
 
         score += 100;
 
-        document.getElementById("result").innerHTML =
-        "✅ Correct!";
+        correctSound();
+
+        document.getElementById("result")
+            .innerHTML =
+            "✅ CORRECT! 🔥";
+
+        document.getElementById("result")
+            .style.color="#00ffae";
+
+        document.getElementById("question")
+            .innerHTML =
+            "🌟 You got it!";
+
+
+        gameFinished = true;
+
+
+        setTimeout(function(){
+
+            winSound();
+
+            document.getElementById("question")
+                .innerHTML =
+                "🏆 MIND MASTER!";
+
+            document.getElementById("result")
+                .innerHTML =
+                "You completed the challenge!";
+
+        },700);
+
 
     }else{
 
-        document.getElementById("result").innerHTML =
-        "❌ Wrong!";
+        wrongSound();
+
+        document.getElementById("result")
+            .innerHTML =
+            "❌ WRONG! Try again.";
+
+        document.getElementById("result")
+            .style.color="#ff527f";
 
     }
 
-    document.getElementById("score").innerHTML =
-    "Score: " + score;
+
+    document.getElementById("score")
+        .innerHTML =
+        "Score: " + score;
 
 }
 
-</script>
-
-</body>
-</html>
+</
