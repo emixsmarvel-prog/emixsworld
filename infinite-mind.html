@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ÉMÌXS — Infinite Mind</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html,body{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  background:#000;
+  color:white;
+  font-family:Arial,sans-serif;
+}
+
+canvas{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+}
+
+#space{
+  z-index:0;
+}
+
+#universe{
+  position:relative;
+  width:100%;
+  height:100%;
+  z-index:2;
+}
+
+.title{
+  position:absolute;
+  top:25px;
+  left:0;
+  right:0;
+  text-align:center;
+  font-size:13px;
+  letter-spacing:6px;
+  opacity:.7;
+}
+
+.core{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  background:radial-gradient(circle,#ffffff,#8c8cff 20%,#25155c 45%,#05000f 75%);
+  box-shadow:
+    0 0 25px #8c8cff,
+    0 0 70px #542cff,
+    0 0 130px #25155c;
+  animation:pulse 3s infinite alternate;
+}
+
+.core h1{
+  font-size:27px;
+  letter-spacing:4px;
+}
+
+.core span{
+  font-size:30px;
+  margin-top:5px;
+}
+
+@keyframes pulse{
+  from{transform:translate(-50%,-50%) scale(1)}
+  to{transform:translate(-50%,-50%) scale(1.08)}
+}
+
+.planet{
+  position:absolute;
+  width:105px;
+  height:105px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.35);
+  color:white;
+  background:radial-gradient(circle at 35% 30%,#fff,#6d4cff 20%,#16052f 65%);
+  box-shadow:0 0 20px #633cff;
+  font-weight:bold;
+  font-size:11px;
+  letter-spacing:1px;
+  cursor:pointer;
+  transition:.25s;
+}
+
+.planet:hover{
+  transform:scale(1.12);
+  box-shadow:0 0 35px #fff,0 0 70px #633cff;
+}
+
+#dreams{
+  top:15%;
+  left:12%;
+}
+
+#thoughts{
+  top:20%;
+  right:12%;
+}
+
+#emotions{
+  bottom:15%;
+  left:10%;
+}
+
+#memories{
+  bottom:18%;
+  right:10%;
+}
+
+#creativity{
+  top:44%;
+  left:4%;
+}
+
+#unknown{
+  top:44%;
+  right:4%;
+  background:radial-gradient(circle,#fff,#ff45c8 15%,#240020 65%);
+  box-shadow:0 0 25px #ff45c8;
+}
+
+.controls{
+  position:absolute;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:8px;
+}
+
+.controls button{
+  border:1px solid #777;
+  background:rgba(0,0,0,.65);
+  color:white;
+  padding:9px 13px;
+  border-radius:20px;
+  cursor:pointer;
+}
+
+#panel{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:10;
+  background:rgba(0,0,0,.82);
+  backdrop-filter:blur(8px);
+  align-items:center;
+  justify-content:center;
+  padding:25px;
+}
+
+.box{
+  width:min(420px,100%);
+  padding:30px;
+  text-align:center;
+  border:1px solid #674dff;
+  border-radius:25px;
+  background:linear-gradient(145deg,#10051e,#03030a);
+  box-shadow:0 0 50px #342080;
+}
+
+.box h2{
+  font-size:28px;
+  letter-spacing:3px;
+  margin-bottom:15px;
+}
+
+.box p{
+  line-height:1.6;
+  color:#ccc;
+  margin-bottom:25px;
+}
+
+.box button{
+  padding:12px 20px;
+  border:none;
+  border-radius:25px;
+  background:#6d4cff;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+#world{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:20;
+  background:#020006;
+}
+
+#worldCanvas{
+  position:absolute;
+  inset:0;
+}
+
+.worldContent{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:25px;
+}
+
+.worldContent h1{
+  font-size:42px;
+  letter-spacing:5px;
+  text-shadow:0 0 25px #8c7cff;
+}
+
+.worldContent p{
+  max-width:500px;
+  color:#ccc;
+  line-height:1.7;
+  margin-top:15px;
+}
+
+.back{
+  position:absolute;
+  top:20px;
+  left:20px;
+  z-index:5;
+  padding:10px 18px;
+  border-radius:20px;
+  border:1px solid #777;
+  color:white;
+  background:rgba(0,0,0,.5);
+  cursor:pointer;
+}
+
+@media(max-width:600px){
+  .planet{
+    width:80px;
+    height:80px;
+    font-size:9px;
+  }
+
+  .core{
+    width:125px;
+    height:125px;
+  }
+
+  .core h1{
+    font-size:21px;
+  }
+
+  #dreams{top:13%;left:5%}
+  #thoughts{top:13%;right:5%}
+  #emotions{bottom:13%;left:5%}
+  #memories{bottom:13%;right:5%}
+  #creativity{top:42%;left:0}
+  #unknown{top:42%;right:0}
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="space"></canvas>
+
+<div id="universe">
+
+  <div class="title">WELCOME TO THE INFINITE MIND</div>
+
+  <div class="core">
+    <h1>ÉMÌXS</h1>
+    <span>♾️</span>
+    <small>MIND</small>
+  </div>
+
+  <button class="planet" id="dreams">DREAMS</button>
+  <button class="planet" id="thoughts">THOUGHTS</button>
+  <button class="planet" id="emotions">EMOTIONS</button>
+  <button class="planet" id="memories">MEMORIES</button>
+  <button class="planet" id="creativity">CREATIVITY</button>
+  <button class="planet" id="unknown">UNKNOWN</button>
+
+  <div class="controls">
+    <button onclick="location.reload()">⟳ HOME</button>
+    <button onclick="zoomOut()">−</button>
+    <button onclick="zoomIn()">+</button>
+  </div>
+
+</div>
+
+<div id="panel">
+  <div class="box">
+    <h2 id="panelTitle"></h2>
+    <p id="panelText"></p>
+    <button onclick="enterWorld()">ENTER WORLD ♾️</button>
+    <br><br>
+    <button onclick="closePanel()">CLOSE</button>
+  </div>
+</div>
+
+<div id="world">
+
+  <button class="back" onclick="leaveWorld()">← BACK</button>
+
+  <canvas id="worldCanvas"></canvas>
+
+  <div class="worldContent">
+    <h1 id="worldTitle"></h1>
+    <p id="worldText"></p>
+  </div>
+
+</div>
+
+<script>
+
+const canvas=document.getElementById("space");
+const ctx=canvas.getContext("2d");
+
+let W,H;
+let stars=[];
+let zoom=1;
+
+function resize(){
+  W=canvas.width=innerWidth;
+  H=canvas.height=innerHeight;
+
+  stars=[];
+
+  for(let i=0;i<180;i++){
+    stars.push({
+      x:Math.random()*W,
+      y:Math.random()*H,
+      r:Math.random()*1.5,
+      s:Math.random()*.5+.1
+    });
+  }
+}
+
+resize();
+addEventListener("resize",resize);
+
+function drawSpace(){
+
+  ctx.fillStyle="#000";
+  ctx.fillRect(0,0,W,H);
+
+  for(const s of stars){
+
+    s.y+=s.s;
+
+    if(s.y>H){
+      s.y=0;
+      s.x=Math.random()*W;
+    }
+
+    ctx.fillStyle="white";
+    ctx.globalAlpha=Math.random()*.8+.2;
+
+    ctx.beginPath();
+    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fill();
+  }
+
+  ctx.globalAlpha=1;
+
+  requestAnimationFrame(drawSpace);
+}
+
+drawSpace();
+
+function zoomIn(){
+  zoom=Math.min(1.4,zoom+.1);
+  document.getElementById("universe").style.transform=`scale(${zoom})`;
+}
+
+function zoomOut(){
+  zoom=Math.max(.7,zoom-.1);
+  document.getElementById("universe").style.transform=`scale(${zoom})`;
+}
+
+const worlds={
+
+  dreams:{
+    title:"DREAMS",
+    text:"The place where impossible ideas become possible."
+  },
+
+  thoughts:{
+    title:"THOUGHTS",
+    text:"Every question, idea and strange thought has a place here."
+  },
+
+  emotions:{
+    title:"EMOTIONS",
+    text:"A universe built from everything the mind can feel."
+  },
+
+  memories:{
+    title:"MEMORIES",
+    text:"Moments that happened before, preserved inside the mind."
+  },
+
+  creativity:{
+    title:"CREATIVITY",
+    text:"Ideas become worlds, stories, inventions and possibilities."
+  },
+
+  unknown:{
+    title:"THE UNKNOWN",
+    text:"Some parts of the mind are waiting to be discovered."
+  }
+
+};
+
+let selected="";
+
+document.querySelectorAll(".planet").forEach(button=>{
+
+  button.addEventListener("click",()=>{
+
+    selected=button.id;
+
+    document.getElementById("panelTitle").textContent=
+      worlds[selected].title;
+
+    document.getElementById("panelText").textContent=
+      worlds[selected].text;
+
+    document.getElementById("panel").style.display="flex";
+  });
+
+});
+
+function closePanel(){
+  document.getElementById("panel").style.display="none";
+}
+
+function enterWorld(){
+
+  document.getElementById("panel").style.display="none";
+
+  document.getElementById("world").style.display="block";
+
+  document.getElementById("worldTitle").textContent=
+    worlds[selected].title;
+
+  document.getElementById("worldText").textContent=
+    worlds[selected].text;
+
+  startWorld();
+}
+
+function leaveWorld(){
+  document.getElementById("world").style.display="none";
+}
+
+const wc=document.getElementById("worldCanvas");
+const wctx=wc.getContext("2d");
+
+function resizeWorld(){
+  wc.width=innerWidth;
+  wc.height=innerHeight;
+}
+
+resizeWorld();
+addEventListener("resize",resizeWorld);
+
+function startWorld(){
+
+  function animate(){
+
+    if(document.getElementById("world").style.display==="none")
+      return;
+
+    wctx.fillStyle="#020006";
+    wctx.fillRect(0,0,wc.width,wc.height);
+
+    for(let i=0;i<80;i++){
+
+      let x=Math.random()*wc.width;
+      let y=Math.random()*wc.height;
+
+      wctx.fillStyle="rgba(255,255,255,.5)";
+      wctx.fillRect(x,y,1,1);
+    }
+
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+}
+
+</script>
+
+</body>
+  </html>
